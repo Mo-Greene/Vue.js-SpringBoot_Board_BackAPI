@@ -20,6 +20,8 @@ public class BoardService {
     private final BoardDAO boardDAO;
     private final ReplyDAO replyDAO;
 
+    private final SHA512 sha512;
+
     /**
      * 게시글 조회
      * @param pageDTO
@@ -40,7 +42,6 @@ public class BoardService {
      * @param boardDTO
      */
     public void postArticle(BoardDTO boardDTO) throws NoSuchAlgorithmException {
-        SHA512 sha512 = new SHA512();
 
         String password = sha512.encrypt(boardDTO.getBoardPassword());
 
@@ -79,16 +80,13 @@ public class BoardService {
      */
     // TODO: 2023/03/01 예외처리
     public void modifyArticle(BoardDTO boardDTO) throws NoSuchAlgorithmException {
-        SHA512 sha512 = new SHA512();
 
         String password = sha512.encrypt(boardDTO.getBoardPassword());
         String dbPassword = boardDAO.dbPassword(boardDTO);
 
         if (!password.equals(dbPassword)) {
-
             throw new RuntimeException("비밀번호 일치하지 않음");
         } else {
-
             boardDAO.modifyArticle(boardDTO);
         } 
     }
