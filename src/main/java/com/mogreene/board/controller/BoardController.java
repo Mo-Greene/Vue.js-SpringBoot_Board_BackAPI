@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -25,6 +26,7 @@ public class BoardController {
      * @param pageDTO
      * @return
      */
+    // TODO: 2023/03/01 게시글 pageDTO 에 담든 해서 보내야됨 현재는 페이징 된 게시글만 보여줌
     @GetMapping("/list")
     public ResponseEntity<List<BoardDTO>> getArticleList(PageDTO pageDTO) {
 
@@ -39,7 +41,8 @@ public class BoardController {
      */
     // TODO: 2023/02/28 예외처리와 ResponseEntity 생각
     @PostMapping("/write")
-    public ResponseEntity<String> postArticle(@RequestBody BoardDTO boardDTO) throws NoSuchAlgorithmException {
+    public ResponseEntity<String> postArticle(@RequestBody BoardDTO boardDTO,
+                                              @RequestParam("file")MultipartFile multipartFile) throws NoSuchAlgorithmException {
 
         boardService.postArticle(boardDTO);
 
