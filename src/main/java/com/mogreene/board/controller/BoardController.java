@@ -1,12 +1,16 @@
 package com.mogreene.board.controller;
 
 import com.mogreene.board.dto.BoardDTO;
+import com.mogreene.board.dto.PageDTO;
 import com.mogreene.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -17,12 +21,25 @@ public class BoardController {
     private final BoardService boardService;
 
     /**
+     * 게시글 전체 조회
+     * @param pageDTO
+     * @return
+     */
+    @GetMapping("/list")
+    public ResponseEntity<List<BoardDTO>> getArticleList(PageDTO pageDTO) {
+
+        List<BoardDTO> list = boardService.getArticleList(pageDTO);
+
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    /**
      * 게시글 등록
      * @param boardDTO
      */
     // TODO: 2023/02/28 예외처리와 ResponseEntity 생각
     @PostMapping("/write")
-    public ResponseEntity postArticle(@RequestBody BoardDTO boardDTO) {
+    public ResponseEntity<String> postArticle(@RequestBody BoardDTO boardDTO) throws NoSuchAlgorithmException {
 
         boardService.postArticle(boardDTO);
 
@@ -36,11 +53,11 @@ public class BoardController {
      */
     // TODO: 2023/02/28 없는 번호 누를시 에러처리
     @GetMapping("/{boardNo}")
-    public BoardDTO getArticleView(@PathVariable("boardNo") Long boardNo) {
+    public ResponseEntity<BoardDTO> getArticleView(@PathVariable("boardNo") Long boardNo) {
 
         BoardDTO boardDTO = boardService.getArticleView(boardNo);
 
-        return boardDTO;
+        return new ResponseEntity<>(boardDTO, HttpStatus.OK);
     }
 
     /**
@@ -49,7 +66,7 @@ public class BoardController {
      * @return
      */
     @DeleteMapping("/{boardNo}/delete")
-    public ResponseEntity deleteArticle(@PathVariable("boardNo") Long boardNo) {
+    public ResponseEntity<String> deleteArticle(@PathVariable("boardNo") Long boardNo) {
 
         boardService.deleteArticle(boardNo);
 
@@ -62,7 +79,10 @@ public class BoardController {
      * @return
      */
     @PostMapping("/{boardNo}/modify")
-    public ResponseEntity modifyArticle(BoardDTO boardDTO) {
+    public ResponseEntity<String> modifyArticle(@PathVariable("boardNo") Long boardNo,
+                                                @RequestBody BoardDTO boardDTO) throws NoSuchAlgorithmException {
+
+        boardDTO.setBoardNo(boardNo);
 
         boardService.modifyArticle(boardDTO);
 
