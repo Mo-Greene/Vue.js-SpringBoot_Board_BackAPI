@@ -41,8 +41,7 @@ public class BoardController {
      */
     // TODO: 2023/02/28 예외처리와 ResponseEntity 생각
     @PostMapping("/write")
-    public ResponseEntity<String> postArticle(@RequestBody BoardDTO boardDTO,
-                                              @RequestParam("file")MultipartFile multipartFile) throws NoSuchAlgorithmException {
+    public ResponseEntity<String> postArticle(@RequestBody BoardDTO boardDTO) throws NoSuchAlgorithmException {
 
         boardService.postArticle(boardDTO);
 
