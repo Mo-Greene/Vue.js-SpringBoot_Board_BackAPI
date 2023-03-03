@@ -120,4 +120,13 @@
 
         WHERE board_no = #{boardNo}
     </select>
+
+    <!--게시글 존재여부 확인-->
+    <select id="findByBoardNo" resultType="Boolean">
+        SELECT board_no
+
+        FROM board
+
+        WHERE board_no = #{boardNo}
+    </select>
 </mapper>

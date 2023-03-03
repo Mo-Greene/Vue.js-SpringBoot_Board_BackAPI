@@ -16,6 +16,7 @@ import javax.validation.constraints.Positive;
 public class PageDTO {
 
     @Builder.Default
+    @Positive
     private int page = 1;
 
     @Builder.Default

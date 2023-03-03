@@ -1,5 +1,7 @@
 package com.mogreene.board.controller;
 
+import com.mogreene.board.common.exception.CustomException;
+import com.mogreene.board.common.exception.ErrorCode;
 import com.mogreene.board.dto.BoardDTO;
 import com.mogreene.board.dto.PageDTO;
 import com.mogreene.board.service.BoardService;
@@ -7,11 +9,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -41,7 +47,12 @@ public class BoardController {
      */
     // TODO: 2023/02/28 예외처리와 ResponseEntity 생각
     @PostMapping("/write")
-    public ResponseEntity<String> postArticle(@RequestBody BoardDTO boardDTO) throws NoSuchAlgorithmException {
+    public ResponseEntity<String> postArticle(@RequestBody @Valid BoardDTO boardDTO,
+                                              BindingResult bindingResult) throws NoSuchAlgorithmException, BindException {
+
+        if (bindingResult.hasErrors()) {
+            throw new CustomException(ErrorCode.INVALID_VALIDATION);
+        }
 
         boardService.postArticle(boardDTO);
 
@@ -82,7 +93,12 @@ public class BoardController {
      */
     @PostMapping("/{boardNo}/modify")
     public ResponseEntity<String> modifyArticle(@PathVariable("boardNo") Long boardNo,
-                                                @RequestBody BoardDTO boardDTO) throws NoSuchAlgorithmException {
+                                                @RequestBody @Valid BoardDTO boardDTO,
+                                                BindingResult bindingResult) throws NoSuchAlgorithmException {
+
+        if (bindingResult.hasErrors()) {
+            throw new CustomException(ErrorCode.INVALID_VALIDATION);
+        }
 
         boardDTO.setBoardNo(boardNo);
 

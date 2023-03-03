@@ -16,4 +16,5 @@ public interface BoardDAO {
     void deleteArticle(Long boardNo);
     void modifyArticle(BoardDTO boardDTO);
     String dbPassword(BoardDTO boardDTO);
+    Boolean findByBoardNo(Long boardNo);
 }

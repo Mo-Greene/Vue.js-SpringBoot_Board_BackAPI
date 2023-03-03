@@ -1,5 +1,7 @@
 package com.mogreene.board.service;
 
+import com.mogreene.board.common.exception.CustomException;
+import com.mogreene.board.common.exception.ErrorCode;
 import com.mogreene.board.dao.BoardDAO;
 import com.mogreene.board.dao.ReplyDAO;
 import com.mogreene.board.dto.BoardDTO;
@@ -8,7 +10,6 @@ import com.mogreene.board.util.SHA512;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
@@ -35,9 +36,7 @@ public class BoardService {
         int total = boardDAO.totalCount(pageDTO);
         pageDTO.setTotal(total);
 
-        List<BoardDTO> list = boardDAO.getArticleList(pageDTO);
-
-        return list;
+        return boardDAO.getArticleList(pageDTO);
     }
 
     /**
@@ -46,9 +45,7 @@ public class BoardService {
      */
     public void postArticle(BoardDTO boardDTO) throws NoSuchAlgorithmException {
 
-        SHA512 sha512 = new SHA512();
-
-        String password = sha512.encrypt(boardDTO.getBoardPassword());
+        String password = encryptPassword(boardDTO.getBoardPassword());
 
         boardDTO.setBoardPassword(password);
 
@@ -63,6 +60,8 @@ public class BoardService {
     @Cacheable(value = "ArticleOne", key = "#boardNo")
     public BoardDTO getArticleView(Long boardNo) {
 
+        findByBoardNo(boardNo);
+
         boardDAO.viewCount(boardNo);
 
         BoardDTO boardDTO = boardDAO.getArticleView(boardNo);
@@ -75,12 +74,14 @@ public class BoardService {
      * 게시글 삭제
      * @param boardNo
      */
-    // TODO: 2023/03/03 캐시 컨테이너 같은게 있다고 하는데 그 안에 같은 value 를 삭제하는 것인지 모르겠다.
+    // TODO: 2023/03/03 캐시 안에 같은 value 를 삭제하는 것인지 모르겠다.
     @Caching(evict = {
             @CacheEvict(value = "ArticleList", allEntries = true),
             @CacheEvict(value = "ArticleOne", key = "#boardNo")
     })
     public void deleteArticle(Long boardNo) {
+
+        findByBoardNo(boardNo);
 
         boardDAO.deleteArticle(boardNo);
     }
@@ -89,7 +90,6 @@ public class BoardService {
      * 게시글 수정
      * @param boardDTO
      */
-    // TODO: 2023/03/01 예외처리
     // TODO: 2023/03/03 CachePut 수정 후 저장된 캐시의 내용을 보여주지 않는다;
     @Caching(evict = {
             @CacheEvict(value = "ArticleList", allEntries = true),
@@ -97,15 +97,54 @@ public class BoardService {
     })
     public void modifyArticle(BoardDTO boardDTO) throws NoSuchAlgorithmException {
 
-        SHA512 sha512 = new SHA512();
+        findByBoardNo(boardDTO.getBoardNo());
+        checkPassword(boardDTO);
 
-        String password = sha512.encrypt(boardDTO.getBoardPassword());
+        boardDAO.modifyArticle(boardDTO);
+    }
+
+    /**
+     * 비밀번호 일치 여부 메서드
+     * @param boardDTO
+     * @throws NoSuchAlgorithmException, CustomException
+     */
+    private void checkPassword(BoardDTO boardDTO) throws NoSuchAlgorithmException {
+
+        String password = encryptPassword(boardDTO.getBoardPassword());
         String dbPassword = boardDAO.dbPassword(boardDTO);
 
         if (!password.equals(dbPassword)) {
-            throw new RuntimeException("비밀번호 일치하지 않음");
-        } else {
-            boardDAO.modifyArticle(boardDTO);
+            throw new CustomException(ErrorCode.NOT_FOUND_PASSWORD);
         }
+    }
+
+    /**
+     * 게시글 존재 여부 메서드
+     * @param boardNo
+     * @throws CustomException
+     */
+    private void findByBoardNo(Long boardNo) {
+
+        if (boardNo <= 0) {
+            throw new CustomException(ErrorCode.INVALID_BOARD_NO);
+        }
+
+        if (boardDAO.findByBoardNo(boardNo) == null) {
+
+            throw new CustomException(ErrorCode.NOT_FOUND_ARTICLE);
+        }
+    }
+
+    /**
+     * 비밀번호 Encrypt 메서드
+     * @param boardPassword
+     * @return String
+     * @throws NoSuchAlgorithmException
+     */
+    private String encryptPassword(String boardPassword) throws NoSuchAlgorithmException {
+
+        SHA512 sha512 = new SHA512();
+
+        return sha512.encrypt(boardPassword);
     }
 }
