@@ -3,7 +3,8 @@ package com.mogreene.board.controller;
 import com.mogreene.board.common.exception.CustomException;
 import com.mogreene.board.common.exception.ErrorCode;
 import com.mogreene.board.dto.BoardDTO;
-import com.mogreene.board.dto.PageDTO;
+import com.mogreene.board.dto.page.PageRequestDTO;
+import com.mogreene.board.dto.page.Pagination;
 import com.mogreene.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,9 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -29,14 +27,22 @@ public class BoardController {
 
     /**
      * 게시글 전체 조회
-     * @param pageDTO
+     * @param pageRequestDTO
      * @return
      */
-    // TODO: 2023/03/01 게시글 pageDTO 에 담든 해서 보내야됨 현재는 페이징 된 게시글만 보여줌
+    // TODO: 2023/03/03 다시 한번 페이지네이션 설명 듣기
     @GetMapping("/list")
-    public ResponseEntity<List<BoardDTO>> getArticleList(PageDTO pageDTO) {
+    public ResponseEntity<Pagination> getArticleList(PageRequestDTO pageRequestDTO) throws CustomException {
 
-        List<BoardDTO> list = boardService.getArticleList(pageDTO);
+        if (pageRequestDTO.getPage() <= 0) {
+            throw new CustomException(ErrorCode.INVALID_PAGE);
+        }
+
+        Pagination list = boardService.getArticleList(pageRequestDTO);
+
+        if (list.getDtoList().isEmpty()) {
+            throw new CustomException(ErrorCode.INVALID_PAGE);
+        }
 
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
@@ -45,10 +51,9 @@ public class BoardController {
      * 게시글 등록
      * @param boardDTO
      */
-    // TODO: 2023/02/28 예외처리와 ResponseEntity 생각
     @PostMapping("/write")
     public ResponseEntity<String> postArticle(@RequestBody @Valid BoardDTO boardDTO,
-                                              BindingResult bindingResult) throws NoSuchAlgorithmException, BindException {
+                                              BindingResult bindingResult) throws NoSuchAlgorithmException, CustomException {
 
         if (bindingResult.hasErrors()) {
             throw new CustomException(ErrorCode.INVALID_VALIDATION);
@@ -64,9 +69,8 @@ public class BoardController {
      * @param boardNo
      * @return
      */
-    // TODO: 2023/02/28 없는 번호 누를시 에러처리
     @GetMapping("/{boardNo}")
-    public ResponseEntity<BoardDTO> getArticleView(@PathVariable("boardNo") Long boardNo) {
+    public ResponseEntity<BoardDTO> getArticleView(@PathVariable("boardNo") Long boardNo) throws CustomException{
 
         BoardDTO boardDTO = boardService.getArticleView(boardNo);
 
@@ -79,7 +83,7 @@ public class BoardController {
      * @return
      */
     @DeleteMapping("/{boardNo}/delete")
-    public ResponseEntity<String> deleteArticle(@PathVariable("boardNo") Long boardNo) {
+    public ResponseEntity<String> deleteArticle(@PathVariable("boardNo") Long boardNo) throws CustomException {
 
         boardService.deleteArticle(boardNo);
 
@@ -94,7 +98,7 @@ public class BoardController {
     @PostMapping("/{boardNo}/modify")
     public ResponseEntity<String> modifyArticle(@PathVariable("boardNo") Long boardNo,
                                                 @RequestBody @Valid BoardDTO boardDTO,
-                                                BindingResult bindingResult) throws NoSuchAlgorithmException {
+                                                BindingResult bindingResult) throws NoSuchAlgorithmException, CustomException {
 
         if (bindingResult.hasErrors()) {
             throw new CustomException(ErrorCode.INVALID_VALIDATION);

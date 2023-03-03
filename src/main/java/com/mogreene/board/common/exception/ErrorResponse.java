@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 public class ErrorResponse {
     private final LocalDateTime time = LocalDateTime.now();
     private final int status;
-    private final String error;
     private final String code;
     private final String message;
 
@@ -20,7 +19,6 @@ public class ErrorResponse {
                 .status(errorCode.getHttpStatus())
                 .body(ErrorResponse.builder()
                         .status(errorCode.getHttpStatus().value())
-                        .error(errorCode.getHttpStatus().name())
                         .code(errorCode.name())
                         .message(errorCode.getMessage())
                         .build());

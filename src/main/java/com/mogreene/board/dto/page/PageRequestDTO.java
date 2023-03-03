@@ -1,4 +1,4 @@
-package com.mogreene.board.dto;
+package com.mogreene.board.dto.page;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,15 +13,13 @@ import javax.validation.constraints.Positive;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PageDTO {
+public class PageRequestDTO {
 
     @Builder.Default
     @Positive
     private int page = 1;
 
     @Builder.Default
-    @Min(value = 10)
-    @Max(value = 100)
     @Positive
     private int size = 10;
     private int total;
@@ -39,16 +37,4 @@ public class PageDTO {
     private String to;
     private int categoryNo;
     private String keyword;
-
-    public PageDTO(int page, int size, int total) {
-        this.page = page;
-        this.size = size;
-        this.total = total;
-        this.endPage = (int)(Math.ceil((double) this.page / 10)) * 10;
-        this.startPage = endPage - 9;
-        int last = (int)(Math.ceil((total / (double)size)));
-        this.endPage = Math.min(endPage, last);
-        this.prev = this.startPage > 1;
-        this.next = total > this.endPage * this.size;
-    }
 }
