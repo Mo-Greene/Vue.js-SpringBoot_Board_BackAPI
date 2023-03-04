@@ -73,7 +73,7 @@ public class BoardController {
      * @param boardNo
      * @return
      */
-    @GetMapping("/{boardNo}")
+    @GetMapping("notice/{boardNo}")
     public ResponseEntity<BoardDTO> getArticleView(@PathVariable("boardNo") Long boardNo) throws CustomException{
 
         BoardDTO boardDTO = boardService.getArticleView(boardNo);
@@ -86,7 +86,7 @@ public class BoardController {
      * @param boardNo
      * @return
      */
-    @DeleteMapping("/{boardNo}/delete")
+    @DeleteMapping("delete/{boardNo}")
     public ResponseEntity<String> deleteArticle(@PathVariable("boardNo") Long boardNo) throws CustomException {
 
         boardService.deleteArticle(boardNo);
