@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mogreene.board.dao.FileDAO">
+
+    <!--파일 저장-->
+    <insert id="saveFile" parameterType="FileDTO">
+        INSERT INTO file
+            (file_original_name, file_name, file_path)
+
+        VALUES
+            (#{fileOriginalName}, #{fileName}, #{filePath})
+    </insert>
+
+    <select id="getFile" parameterType="Long" resultType="FileDTO">
+        SELECT *
+
+        FROM file
+
+        WHERE file_no = #{fileNo}
+    </select>
+
+</mapper>

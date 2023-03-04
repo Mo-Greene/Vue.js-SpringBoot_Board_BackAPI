@@ -12,6 +12,7 @@
             (#{replyContent}, #{boardNo})
     </insert>
 
+    <!--댓글 전체 조회-->
     <select id="getReplyList" resultType="ReplyDTO">
         SELECT reply_content, reply_reg_date
 

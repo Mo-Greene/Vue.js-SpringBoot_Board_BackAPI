@@ -4,6 +4,11 @@ spring:
     url: jdbc:log4jdbc:mariadb://localhost:3306/backapi
     username: root
     password: 1234
+  servlet:
+    multipart:
+      max-request-size: 10MB
+      max-file-size: 50MB
+      enabled: true
 
 mybatis:
   type-aliases-package: com.mogreene.board.dto

@@ -35,6 +35,8 @@ public class BoardService {
      * @param pageRequestDTO
      * @return
      */
+    // TODO: 2023/03/04 카테고리만 캐쉬로 만들어라
+    // TODO: 2023/03/04 메서드이름에 맞게
     @Cacheable(value = "ArticleList", key = "#pageRequestDTO.page")
     public Pagination getArticleList(PageRequestDTO pageRequestDTO) throws CustomException {
 

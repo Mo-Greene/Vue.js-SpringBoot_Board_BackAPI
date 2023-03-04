@@ -67,7 +67,7 @@
     </insert>
 
     <!--게시글 상세조회-->
-    <select id="getArticleView" resultType="BoardDTO">
+    <select id="getArticleView" resultType="boardDTO">
         SELECT board_no,
                board_title,
                board_content,

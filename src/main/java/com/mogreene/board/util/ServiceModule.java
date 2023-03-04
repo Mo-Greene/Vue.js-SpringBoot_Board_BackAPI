@@ -13,6 +13,7 @@ import java.security.NoSuchAlgorithmException;
 @RequiredArgsConstructor
 public class ServiceModule {
     private final SHA512 sha512;
+    // TODO: 2023/03/04 boardDAO 생각 
     private final BoardDAO boardDAO;
 
     /**
@@ -52,6 +53,7 @@ public class ServiceModule {
      */
     public void modDateFormat(BoardDTO boardDTO) {
 
+        // TODO: 2023/03/04 null체크 좀 더 
         if (boardDTO.getBoardModDate() == null) {
             boardDTO.setBoardModDate("-");
         }

@@ -1,17 +1,13 @@
 package com.mogreene.board.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.mogreene.board.dto.page.Pagination;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -42,6 +38,7 @@ public class BoardDTO {
     private int boardView;
     private int categoryNo;
     private String categoryContent;
+    private Long fileNo;
     private List<ReplyDTO> replyList;
 
 }
