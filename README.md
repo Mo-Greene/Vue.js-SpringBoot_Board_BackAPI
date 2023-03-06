@@ -1,3 +1,10 @@
+## 피드백 수정 해야될 것
+- 메서드 이름 및 전체적인 리펙토링 진행
+
+
+<details>
+<summary>Vue.js 프로젝트 생성 에러 기록</summary>
+
 Vue 설정 오류 해결
 - https://araikuma.tistory.com/117
 
@@ -18,11 +25,12 @@ sudo chown -R {소유권자}:{그룹식별자} {소유권을 변경하고 싶은
 <br/>
 sudo chown -R mogreene:staff {소유권을 변경하고 싶은 디렉토리명}
 
-<br/>
-<br/>
+왜 맥은 이런걸까유ㅠㅠㅠ
+</details>
+
 <br/>
 <details>
-<summary><h3>피드백</h3></summary>
+<summary>피드백</summary>
 SpringBoot를 완성시키는걸 위주로!!
 
 Vue는 차차 공부하자
