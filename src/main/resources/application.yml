@@ -9,6 +9,10 @@ spring:
       max-request-size: 10MB
       max-file-size: 50MB
       enabled: true
+      location: /Users/mogreene/Desktop/files
+mogreene:
+  upload:
+    path: /Users/mogreene/Desktop/files/
 
 mybatis:
   type-aliases-package: com.mogreene.board.dto

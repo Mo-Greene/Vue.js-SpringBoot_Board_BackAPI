@@ -6,8 +6,10 @@ import com.mogreene.board.dto.BoardDTO;
 import com.mogreene.board.dto.page.PageRequestDTO;
 import com.mogreene.board.dto.page.Pagination;
 import com.mogreene.board.service.BoardService;
+import com.mogreene.board.service.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -17,15 +19,18 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+
 @Slf4j
 @RestController
 @RequestMapping("/board")
 @RequiredArgsConstructor
 public class BoardController {
 
-    // TODO: 2023/03/04 리턴 responseApi를 생각해서 만들어보자 
+    // TODO: 2023/03/04 리턴 responseApi를 생각해서 만들어보자
     // TODO: 2023/03/04 responseApi 안에 result 생각하고 resultCode 생각하자
     private final BoardService boardService;
+    private final FileService fileService;
 
     /**
      * 게시글 전체 조회
@@ -37,15 +42,7 @@ public class BoardController {
     @GetMapping("/list")
     public ResponseEntity<Pagination> getArticleList(PageRequestDTO pageRequestDTO) throws CustomException {
 
-        if (pageRequestDTO.getPage() <= 0) {
-            throw new CustomException(ErrorCode.INVALID_PAGE);
-        }
-
         Pagination list = boardService.getArticleList(pageRequestDTO);
-
-        if (list.getDtoList().isEmpty()) {
-            throw new CustomException(ErrorCode.INVALID_PAGE);
-        }
 
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
@@ -56,13 +53,14 @@ public class BoardController {
      */
     @PostMapping("/write")
     public ResponseEntity<String> postArticle(@RequestPart @Valid BoardDTO boardDTO,
-                                              @RequestPart(value = "file", required = false) MultipartFile file,
+                                              @RequestPart(value = "file", required = false) MultipartFile[] multipartFile,
                                               BindingResult bindingResult) throws CustomException, NoSuchAlgorithmException, IOException {
 
         if (bindingResult.hasErrors()) {
             throw new CustomException(ErrorCode.INVALID_VALIDATION);
         }
 
+        fileService.uploadFile(multipartFile);
         boardService.postArticle(boardDTO);
 
         return new ResponseEntity<>("Success", HttpStatus.CREATED);
@@ -99,7 +97,7 @@ public class BoardController {
      * @param boardDTO
      * @return
      */
-    @PostMapping("/{boardNo}/modify")
+    @PutMapping("/modify/{boardNo}")
     public ResponseEntity<String> modifyArticle(@PathVariable("boardNo") Long boardNo,
                                                 @RequestBody @Valid BoardDTO boardDTO,
                                                 BindingResult bindingResult) throws NoSuchAlgorithmException, CustomException {

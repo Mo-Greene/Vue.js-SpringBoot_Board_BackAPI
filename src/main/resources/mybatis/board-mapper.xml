@@ -25,10 +25,9 @@
 
     <!--게시글 개수 + 검색조건 데이터-->
     <select id="totalCount" resultType="int">
-        SELECT count
-            (board_no)
+        SELECT COUNT(board_no)
 
-        FROM board as b
+        FROM board AS b
 
         <include refid="search"></include>
     </select>
@@ -44,8 +43,8 @@
                board_view,
                c.category_content
 
-        FROM board as b
-            JOIN category as c
+        FROM board AS b
+            JOIN category AS c
                 ON b.category_no = c.category_no
 
         <include refid="search"></include>
@@ -77,8 +76,8 @@
                board_view,
                c.category_content
 
-        FROM board as b
-            JOIN category as c
+        FROM board AS b
+            JOIN category AS c
                 ON b.category_no = c.category_no
 
         WHERE board_no = #{boardNo}

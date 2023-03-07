@@ -7,6 +7,16 @@ import java.util.List;
 
 @Mapper
 public interface ReplyDAO {
+    /**
+     * 댓글 등록
+     * @param replyDTO
+     */
     void postReply(ReplyDTO replyDTO);
+
+    /**
+     * 댓글 리스트
+     * @param BoardNo
+     * @return
+     */
     List<ReplyDTO> getReplyList(Long BoardNo);
 }

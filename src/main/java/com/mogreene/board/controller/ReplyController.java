@@ -16,7 +16,13 @@ public class ReplyController {
 
     private final ReplyService replyService;
 
-    @PostMapping("/{boardNo}/reply")
+    /**
+     * 댓글 등록
+     * @param boardNo
+     * @param replyDTO
+     * @return
+     */
+    @PostMapping("/notice/{boardNo}/reply")
     public ResponseEntity<String> postReply(@PathVariable("boardNo") Long boardNo,
                                             @RequestBody ReplyDTO replyDTO) {
 

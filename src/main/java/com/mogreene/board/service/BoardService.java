@@ -1,19 +1,14 @@
 package com.mogreene.board.service;
 
 import com.mogreene.board.common.exception.CustomException;
-import com.mogreene.board.common.exception.ErrorCode;
 import com.mogreene.board.dao.BoardDAO;
 import com.mogreene.board.dao.ReplyDAO;
 import com.mogreene.board.dto.BoardDTO;
 import com.mogreene.board.dto.page.PageRequestDTO;
 import com.mogreene.board.dto.page.Pagination;
 import com.mogreene.board.util.SHA512;
-import com.mogreene.board.util.ServiceModule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
@@ -27,7 +22,6 @@ public class BoardService {
 
     private final BoardDAO boardDAO;
     private final ReplyDAO replyDAO;
-    private final ServiceModule serviceModule;
     private final SHA512 sha512;
 
     /**
@@ -37,14 +31,9 @@ public class BoardService {
      */
     // TODO: 2023/03/04 카테고리만 캐쉬로 만들어라
     // TODO: 2023/03/04 메서드이름에 맞게
-    @Cacheable(value = "ArticleList", key = "#pageRequestDTO.page")
     public Pagination getArticleList(PageRequestDTO pageRequestDTO) throws CustomException {
 
         List<BoardDTO> list = boardDAO.getArticleList(pageRequestDTO);
-        list = list.stream()
-                .peek(serviceModule::modDateFormat)
-                .collect(Collectors.toList());
-
         int total = boardDAO.totalCount(pageRequestDTO);
 
         return Pagination.withAll()
@@ -58,7 +47,7 @@ public class BoardService {
      * 게시글 등록
      * @param boardDTO
      */
-    public void postArticle(BoardDTO boardDTO) throws NoSuchAlgorithmException, CustomException {
+    public void postArticle(BoardDTO boardDTO) throws NoSuchAlgorithmException {
 
         String password = sha512.encrypt(boardDTO.getBoardPassword());
 
@@ -72,15 +61,15 @@ public class BoardService {
      * @param boardNo
      * @return
      */
-    @Cacheable(value = "ArticleOne", key = "#boardNo")
     public BoardDTO getArticleView(Long boardNo) throws CustomException {
 
-        serviceModule.validBoardNo(boardNo);
+        if (boardNo <= 0 || boardDAO.findByBoardNo(boardNo) == null) {
+            throw new RuntimeException();
+        }
 
         boardDAO.viewCount(boardNo);
 
         BoardDTO boardDTO = boardDAO.getArticleView(boardNo);
-        serviceModule.modDateFormat(boardDTO);
 
         boardDTO.setReplyList(replyDAO.getReplyList(boardNo));
 
@@ -91,13 +80,12 @@ public class BoardService {
      * 게시글 삭제
      * @param boardNo
      */
-    @Caching(evict = {
-            @CacheEvict(value = "ArticleList", allEntries = true),
-            @CacheEvict(value = "ArticleOne", key = "#boardNo")
-    })
-    public void deleteArticle(Long boardNo) throws CustomException {
+    // TODO: 2023/03/07 예외처리 생각해야됨
+    public void deleteArticle(Long boardNo) {
 
-        serviceModule.validBoardNo(boardNo);
+        if (boardNo <= 0 || boardDAO.findByBoardNo(boardNo) == null) {
+            throw new RuntimeException();
+        }
 
         boardDAO.deleteArticle(boardNo);
     }
@@ -106,15 +94,15 @@ public class BoardService {
      * 게시글 수정
      * @param boardDTO
      */
-    // TODO: 2023/03/03 CachePut 수정 후 저장된 캐시의 내용을 보여주지 않는다;
-    @Caching(evict = {
-            @CacheEvict(value = "ArticleList", allEntries = true),
-            @CacheEvict(value = "ArticleOne", key = "#boardDTO.boardNo")
-    })
-    public void modifyArticle(BoardDTO boardDTO) throws NoSuchAlgorithmException, CustomException {
+    // TODO: 2023/03/07 예외처리 관해선 좀 더 생각해보자
+    public void modifyArticle(BoardDTO boardDTO) throws NoSuchAlgorithmException {
 
-        serviceModule.validBoardNo(boardDTO.getBoardNo());
-        serviceModule.checkPassword(boardDTO);
+        String password = sha512.encrypt(boardDTO.getBoardPassword());
+        String dbPassword = boardDAO.dbPassword(boardDTO);
+
+        if (!password.equals(dbPassword)) {
+            throw new RuntimeException();
+        }
 
         boardDAO.modifyArticle(boardDTO);
     }

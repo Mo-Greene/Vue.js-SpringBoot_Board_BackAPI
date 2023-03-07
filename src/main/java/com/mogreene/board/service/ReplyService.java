@@ -4,7 +4,6 @@ import com.mogreene.board.common.exception.CustomException;
 import com.mogreene.board.dao.BoardDAO;
 import com.mogreene.board.dao.ReplyDAO;
 import com.mogreene.board.dto.ReplyDTO;
-import com.mogreene.board.util.ServiceModule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class ReplyService {
 
     private final ReplyDAO replyDAO;
-    private final ServiceModule serviceModule;
+    private final BoardDAO boardDAO;
 
     /**
      * 댓글 등록
@@ -23,7 +22,9 @@ public class ReplyService {
      */
     public void postReply(ReplyDTO replyDTO) throws CustomException {
 
-        serviceModule.validBoardNo(replyDTO.getBoardNo());
+        if (replyDTO.getBoardNo() <= 0 || boardDAO.findByBoardNo(replyDTO.getBoardNo()) == null) {
+            throw new RuntimeException();
+        }
 
         replyDAO.postReply(replyDTO);
     }
