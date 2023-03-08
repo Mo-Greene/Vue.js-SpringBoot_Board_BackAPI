@@ -6,10 +6,10 @@
     <!--파일 저장-->
     <insert id="saveFile" parameterType="FileDTO">
         INSERT INTO file
-            (file_original_name, file_name, file_path)
+            (file_original_name, file_name, file_path, board_no)
 
         VALUES
-            (#{fileOriginalName}, #{fileName}, #{filePath})
+            (#{fileOriginalName}, #{fileName}, #{filePath}, #{boardNo})
     </insert>
 
     <select id="getFile" parameterType="Long" resultType="FileDTO">

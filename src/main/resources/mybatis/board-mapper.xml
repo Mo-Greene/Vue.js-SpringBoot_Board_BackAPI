@@ -55,7 +55,7 @@
     </select>
 
     <!--게시글 등록-->
-    <insert id="postArticle" parameterType="BoardDTO">
+    <insert id="postArticle" parameterType="BoardDTO" useGeneratedKeys="true" keyProperty="boardNo" keyColumn="board_no">
         INSERT INTO board
             (category_no, board_title, board_content, board_writer,
              board_password)

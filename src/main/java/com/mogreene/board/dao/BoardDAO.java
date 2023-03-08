@@ -26,7 +26,7 @@ public interface BoardDAO {
      * 게시글 등록
      * @param boardDTO
      */
-    void postArticle(BoardDTO boardDTO);
+    Long postArticle(BoardDTO boardDTO);
 
     /**
      * 게시글 상세조회

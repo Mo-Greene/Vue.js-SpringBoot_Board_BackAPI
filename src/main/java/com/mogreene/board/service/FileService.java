@@ -2,7 +2,6 @@ package com.mogreene.board.service;
 
 import com.mogreene.board.dao.FileDAO;
 import com.mogreene.board.dto.FileDTO;
-import com.mogreene.board.util.MD5;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +23,6 @@ import java.util.UUID;
 public class FileService {
 
     private final FileDAO fileDAO;
-    private final MD5 md5;
 
     @Value("${mogreene.upload.path}")
     private String uploadPath;
@@ -34,7 +32,7 @@ public class FileService {
      * @param multipartFiles
      */
     // TODO: 2023/03/07 예외처리 해결해야됨!
-    public void uploadFile(MultipartFile[] multipartFiles) throws IOException {
+    public void uploadFile(Long boardNo, MultipartFile[] multipartFiles) throws IOException {
 
         for (MultipartFile files : multipartFiles) {
             String fileOriginalName = files.getOriginalFilename();
@@ -43,14 +41,15 @@ public class FileService {
             String extension = fileOriginalName.substring(fileOriginalName.lastIndexOf("."));
 
             String fileName = uuid + extension;
-//            String folderPath = makeFolder();
+            String folderPath = makeFolder();
 
-            String filePath = uploadPath + fileName;
+            String filePath = uploadPath + folderPath + fileName;
 
             FileDTO fileDTO = FileDTO.builder()
                     .fileOriginalName(fileOriginalName)
                     .fileName(fileName)
                     .filePath(filePath)
+                    .boardNo(boardNo)
                     .build();
 
             files.transferTo(new File(filePath));
@@ -66,7 +65,7 @@ public class FileService {
      */
     private String makeFolder() {
 
-        String str = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+        String str = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd/"));
         String folderPath = str.replace("/", File.separator);
 
         File uploadPathFolder = new File(uploadPath, folderPath);

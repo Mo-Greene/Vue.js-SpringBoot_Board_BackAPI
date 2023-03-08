@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -47,13 +46,15 @@ public class BoardService {
      * 게시글 등록
      * @param boardDTO
      */
-    public void postArticle(BoardDTO boardDTO) throws NoSuchAlgorithmException {
+    public Long postArticle(BoardDTO boardDTO) throws NoSuchAlgorithmException {
 
         String password = sha512.encrypt(boardDTO.getBoardPassword());
 
         boardDTO.setBoardPassword(password);
 
         boardDAO.postArticle(boardDTO);
+
+        return boardDTO.getBoardNo();
     }
 
     /**

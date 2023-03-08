@@ -60,8 +60,8 @@ public class BoardController {
             throw new CustomException(ErrorCode.INVALID_VALIDATION);
         }
 
-        fileService.uploadFile(multipartFile);
-        boardService.postArticle(boardDTO);
+        Long boardNo = boardService.postArticle(boardDTO);
+        fileService.uploadFile(boardNo, multipartFile);
 
         return new ResponseEntity<>("Success", HttpStatus.CREATED);
     }
