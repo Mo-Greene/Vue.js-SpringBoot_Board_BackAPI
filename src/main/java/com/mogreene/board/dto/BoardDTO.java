@@ -55,10 +55,10 @@ public class BoardDTO {
     private String categoryContent;
 
     /* 파일 존재 유무 */
-    private boolean existFile = false;
+    private boolean isExistFile = false;
 
     /* 파일 fk */
-    private Long fileNo;
+    private List<FileDTO> fileNo;
 
     /* 게시글 내 댓글 리스트 */
     private List<ReplyDTO> replyList;
