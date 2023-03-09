@@ -11,14 +11,32 @@ import java.util.List;
 @ToString
 public class PageResponseDTO {
 
+    /* 게시글 페이징 */
     private int page;
+
+    /* 한 페이지 당 게시글 */
     private int size;
+
+    /* 게시글 총 개수 */
     private int total;
+
+    /* 게시글 블록 시작 페이지 */
     private int startPage;
+
+    /* 게시글 블록 끝 페이지 */
     private int endPage;
+
+    /* 게시글 블록 이전 유무 */
     private boolean prev;
+
+    /* 게시글 블록 다음 유무 */
     private boolean next;
 
+    /**
+     * 게시글 페이지 객체로 리턴
+     * @param pageRequestDTO
+     * @param total
+     */
     @Builder(builderMethodName = "withAll")
     public PageResponseDTO(PageRequestDTO pageRequestDTO, int total) {
         this.page = pageRequestDTO.getPage();
