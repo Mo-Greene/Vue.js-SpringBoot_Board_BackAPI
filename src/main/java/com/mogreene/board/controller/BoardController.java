@@ -2,6 +2,7 @@ package com.mogreene.board.controller;
 
 import com.mogreene.board.common.exception.CustomException;
 import com.mogreene.board.common.exception.ErrorCode;
+import com.mogreene.board.common.status.StatusCode;
 import com.mogreene.board.dto.BoardDTO;
 import com.mogreene.board.common.api.ApiResponseDTO;
 import com.mogreene.board.dto.page.PageRequestDTO;
@@ -21,7 +22,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/board")
+@RequestMapping("/boards")
 @RequiredArgsConstructor
 public class BoardController {
 
@@ -40,7 +41,7 @@ public class BoardController {
         List<BoardDTO> list = boardService.getArticleList(pageRequestDTO);
 
         return ApiResponseDTO.builder()
-                .resultType(true)
+                .resultType(StatusCode.SUCCESS)
                 .httpStatus(HttpStatus.OK)
                 .resultCode(HttpStatus.OK.value())
                 .resultData(list)
@@ -60,15 +61,29 @@ public class BoardController {
             throw new CustomException(ErrorCode.INVALID_VALIDATION);
         }
 
-        Long boardNo = boardService.postArticle(boardDTO);
-        fileService.uploadFile(boardNo, multipartFile);
+        if (multipartFile != null) {
 
-        return ApiResponseDTO.builder()
-                .resultType(true)
-                .httpStatus(HttpStatus.NO_CONTENT)
-                .resultCode(HttpStatus.NO_CONTENT.value())
-                .resultData("Success Posting")
-                .build();
+            Long boardNo = boardService.postArticle(boardDTO);
+
+            fileService.uploadFile(boardNo, multipartFile);
+
+            return ApiResponseDTO.builder()
+                    .resultType(StatusCode.SUCCESS)
+                    .httpStatus(HttpStatus.NO_CONTENT)
+                    .resultCode(HttpStatus.NO_CONTENT.value())
+                    .resultData("Success Posting With Files")
+                    .build();
+        } else {
+
+            boardService.postArticle(boardDTO);
+
+            return ApiResponseDTO.builder()
+                    .resultType(StatusCode.SUCCESS)
+                    .httpStatus(HttpStatus.NO_CONTENT)
+                    .resultCode(HttpStatus.NO_CONTENT.value())
+                    .resultData("Success Posting No Files")
+                    .build();
+        }
     }
 
     /**
@@ -82,7 +97,7 @@ public class BoardController {
         BoardDTO boardDTO = boardService.getArticleView(boardNo);
 
         return ApiResponseDTO.<BoardDTO>builder()
-                .resultType(true)
+                .resultType(StatusCode.SUCCESS)
                 .httpStatus(HttpStatus.OK)
                 .resultCode(HttpStatus.OK.value())
                 .resultData(boardDTO)
@@ -94,13 +109,14 @@ public class BoardController {
      * @param boardNo
      * @return
      */
+    // TODO: 2023/03/09 fk 가 설정이 되니 삭제가 안된다. 고민하
     @DeleteMapping("delete/{boardNo}")
     public ApiResponseDTO<?> deleteArticle(@PathVariable("boardNo") Long boardNo) throws CustomException {
 
         boardService.deleteArticle(boardNo);
 
         return ApiResponseDTO.builder()
-                .resultType(true)
+                .resultType(StatusCode.SUCCESS)
                 .httpStatus(HttpStatus.NO_CONTENT)
                 .resultCode(HttpStatus.NO_CONTENT.value())
                 .resultData("Delete_ok")
@@ -114,8 +130,8 @@ public class BoardController {
      */
     @PutMapping("/modify/{boardNo}")
     public ApiResponseDTO<?> modifyArticle(@PathVariable("boardNo") Long boardNo,
-                                                @RequestBody @Valid BoardDTO boardDTO,
-                                                BindingResult bindingResult) throws NoSuchAlgorithmException, CustomException {
+                                           @RequestBody @Valid BoardDTO boardDTO,
+                                           BindingResult bindingResult) throws CustomException {
 
         if (bindingResult.hasErrors()) {
             throw new CustomException(ErrorCode.INVALID_VALIDATION);
@@ -126,10 +142,42 @@ public class BoardController {
         boardService.modifyArticle(boardDTO);
 
         return ApiResponseDTO.builder()
-                .resultType(true)
+                .resultType(StatusCode.SUCCESS)
                 .httpStatus(HttpStatus.OK)
                 .resultCode(HttpStatus.OK.value())
                 .resultData("Modify_Ok")
                 .build();
+    }
+
+    /**
+     * 비밀번호 확인 (게시글 수정 + 삭제)
+     * @param boardNo
+     * @param boardDTO
+     * @return
+     * @throws NoSuchAlgorithmException
+     */
+    @PostMapping("/check/password/{boardNo}")
+    public ApiResponseDTO<?> passwordCheck(@PathVariable("boardNo") Long boardNo,
+                                           @RequestBody BoardDTO boardDTO) throws NoSuchAlgorithmException {
+
+        boardDTO.setBoardNo(boardNo);
+
+        if (boardService.passwordCheck(boardDTO) == StatusCode.SUCCESS) {
+
+            return ApiResponseDTO.builder()
+                    .resultType(StatusCode.SUCCESS)
+                    .httpStatus(HttpStatus.NO_CONTENT)
+                    .resultCode(HttpStatus.NO_CONTENT.value())
+                    .resultData("Valid Password")
+                    .build();
+        } else {
+
+            return ApiResponseDTO.builder()
+                    .resultType(StatusCode.FAILURE)
+                    .httpStatus(HttpStatus.BAD_REQUEST)
+                    .resultCode(HttpStatus.BAD_REQUEST.value())
+                    .resultData("Invalid Password")
+                    .build();
+        }
     }
 }

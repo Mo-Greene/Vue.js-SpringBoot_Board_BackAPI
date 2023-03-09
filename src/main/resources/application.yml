@@ -19,3 +19,14 @@ mybatis:
   mapper-locations: classpath:mybatis/*.xml
   configuration:
     map-underscore-to-camel-case: true
+
+#mybatis 로깅 설정
+logging:
+  level:
+    jdbc:
+      sqlonly: off
+      sqltiming: debug
+      resultsettable: debug
+      audit: off
+      resultset: off
+      connection: off

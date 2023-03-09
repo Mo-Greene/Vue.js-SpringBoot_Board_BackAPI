@@ -31,7 +31,6 @@ public class FileService {
      * 다중 파일 업로드
      * @param multipartFiles
      */
-    // TODO: 2023/03/07 예외처리 해결해야됨!
     public void uploadFile(Long boardNo, MultipartFile[] multipartFiles) throws IOException {
 
         for (MultipartFile files : multipartFiles) {

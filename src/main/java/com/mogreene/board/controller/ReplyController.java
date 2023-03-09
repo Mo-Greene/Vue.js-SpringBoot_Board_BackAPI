@@ -1,6 +1,7 @@
 package com.mogreene.board.controller;
 
 import com.mogreene.board.common.api.ApiResponseDTO;
+import com.mogreene.board.common.status.StatusCode;
 import com.mogreene.board.dto.ReplyDTO;
 import com.mogreene.board.service.ReplyService;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/board")
+@RequestMapping("/boards")
 @RequiredArgsConstructor
 public class ReplyController {
 
@@ -22,7 +23,7 @@ public class ReplyController {
      * @param replyDTO
      * @return
      */
-    @PostMapping("/notice/{boardNo}/reply")
+    @PostMapping("/notice/reply/{boardNo}")
     public ApiResponseDTO<?> postReply(@PathVariable("boardNo") Long boardNo,
                                             @RequestBody ReplyDTO replyDTO) {
 
@@ -31,7 +32,7 @@ public class ReplyController {
         replyService.postReply(replyDTO);
 
         return ApiResponseDTO.builder()
-                .resultType(true)
+                .resultType(StatusCode.SUCCESS)
                 .httpStatus(HttpStatus.NO_CONTENT)
                 .resultCode(HttpStatus.NO_CONTENT.value())
                 .resultData("Success")

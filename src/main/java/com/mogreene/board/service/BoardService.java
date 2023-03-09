@@ -1,5 +1,6 @@
 package com.mogreene.board.service;
 
+import com.mogreene.board.common.status.StatusCode;
 import com.mogreene.board.dao.BoardDAO;
 import com.mogreene.board.dao.CategoryDAO;
 import com.mogreene.board.dao.ReplyDAO;
@@ -92,7 +93,6 @@ public class BoardService {
      * 게시글 삭제
      * @param boardNo
      */
-    // TODO: 2023/03/07 예외처리 생각해야됨
     public void deleteArticle(Long boardNo) {
 
         if (boardNo <= 0 || boardDAO.findByBoardNo(boardNo) == null) {
@@ -107,15 +107,27 @@ public class BoardService {
      * @param boardDTO
      */
     // TODO: 2023/03/07 예외처리 관해선 좀 더 생각해보자
-    public void modifyArticle(BoardDTO boardDTO) throws NoSuchAlgorithmException {
+    public void modifyArticle(BoardDTO boardDTO) {
+
+        boardDAO.modifyArticle(boardDTO);
+    }
+
+    /**
+     * 비밀번호 확인 로직 (게시글 수정 + 삭제)
+     * @param boardDTO
+     * @return StatusCode
+     * @throws NoSuchAlgorithmException
+     */
+    public StatusCode passwordCheck(BoardDTO boardDTO) throws NoSuchAlgorithmException {
 
         String password = sha512.encrypt(boardDTO.getBoardPassword());
         String dbPassword = boardDAO.dbPassword(boardDTO);
 
         if (!password.equals(dbPassword)) {
-            throw new RuntimeException();
-        }
+            log.error("비밀번호가 같지 않습니다.");
 
-        boardDAO.modifyArticle(boardDTO);
+            return StatusCode.FAILURE;
+        } else
+            return StatusCode.SUCCESS;
     }
 }

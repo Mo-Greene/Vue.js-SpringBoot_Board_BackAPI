@@ -1,6 +1,7 @@
 package com.mogreene.board.controller;
 
 import com.mogreene.board.common.api.ApiResponseDTO;
+import com.mogreene.board.common.status.StatusCode;
 import com.mogreene.board.dto.FileDTO;
 import com.mogreene.board.service.FileService;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +39,7 @@ public class FileController {
         return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/octet-stream"))
                 .header(HttpHeaders.CONTENT_DISPOSITION, fileDTO.getContentDisposition())
                 .body(ApiResponseDTO.<Resource>builder()
-                        .resultType(true)
+                        .resultType(StatusCode.SUCCESS)
                         .httpStatus(HttpStatus.OK)
                         .resultCode(HttpStatus.OK.value())
                         .resultData(fileDTO.getResource())

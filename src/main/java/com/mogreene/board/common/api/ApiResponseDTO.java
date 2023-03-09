@@ -1,11 +1,16 @@
 package com.mogreene.board.common.api;
 
+import com.mogreene.board.common.status.StatusCode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
+/**
+ * 공통 예외처리
+ * @param <T>
+ */
 @Data
 @Builder
 @NoArgsConstructor
@@ -13,7 +18,7 @@ import org.springframework.http.HttpStatus;
 public class ApiResponseDTO<T> {
 
     /* 성공여부 true, false */
-    private boolean resultType = false;
+    private StatusCode resultType;
 
     /* httpStatus */
     private HttpStatus httpStatus;
