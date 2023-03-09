@@ -1,12 +1,10 @@
 package com.mogreene.board.controller;
 
 import com.mogreene.board.dto.FileDTO;
-import com.mogreene.board.dto.api.ApiResponseDTO;
 import com.mogreene.board.service.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

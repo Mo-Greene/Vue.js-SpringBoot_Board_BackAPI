@@ -1,4 +1,4 @@
-package com.mogreene.board.dto.api;
+package com.mogreene.board.common.api;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

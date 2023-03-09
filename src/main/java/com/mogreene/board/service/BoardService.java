@@ -5,7 +5,7 @@ import com.mogreene.board.dao.ReplyDAO;
 import com.mogreene.board.dto.BoardDTO;
 import com.mogreene.board.dto.page.PageRequestDTO;
 import com.mogreene.board.dto.page.PageResponseDTO;
-import com.mogreene.board.util.SHA512;
+import com.mogreene.board.common.util.SHA512;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -53,6 +53,8 @@ public class BoardService {
     /**
      * 게시글 등록
      * @param boardDTO
+     * @return 등록된 게시글 pk
+     * @throws NoSuchAlgorithmException
      */
     public Long postArticle(BoardDTO boardDTO) throws NoSuchAlgorithmException {
 

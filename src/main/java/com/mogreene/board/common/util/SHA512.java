@@ -1,4 +1,4 @@
-package com.mogreene.board.util;
+package com.mogreene.board.common.util;
 
 import org.springframework.stereotype.Component;
 

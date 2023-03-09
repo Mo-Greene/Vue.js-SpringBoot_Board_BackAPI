@@ -3,15 +3,13 @@ package com.mogreene.board.controller;
 import com.mogreene.board.common.exception.CustomException;
 import com.mogreene.board.common.exception.ErrorCode;
 import com.mogreene.board.dto.BoardDTO;
-import com.mogreene.board.dto.api.ApiResponseDTO;
+import com.mogreene.board.common.api.ApiResponseDTO;
 import com.mogreene.board.dto.page.PageRequestDTO;
-import com.mogreene.board.dto.page.PageResponseDTO;
 import com.mogreene.board.service.BoardService;
 import com.mogreene.board.service.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,8 +25,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BoardController {
 
-    // TODO: 2023/03/04 리턴 responseApi를 생각해서 만들어보자
-    // TODO: 2023/03/04 responseApi 안에 result 생각하고 resultCode 생각하자
     private final BoardService boardService;
     private final FileService fileService;
 
