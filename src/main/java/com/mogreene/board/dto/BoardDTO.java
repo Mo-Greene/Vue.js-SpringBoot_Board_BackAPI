@@ -1,5 +1,6 @@
 package com.mogreene.board.dto;
 
+import com.mogreene.board.dto.page.PageResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -57,10 +58,8 @@ public class BoardDTO {
     /* 파일 존재 유무 */
     private boolean isExistFile = false;
 
-    /* 파일 fk */
-    private List<FileDTO> fileNo;
-
     /* 게시글 내 댓글 리스트 */
     private List<ReplyDTO> replyList;
 
+    private PageResponseDTO pageResponseDTO;
 }

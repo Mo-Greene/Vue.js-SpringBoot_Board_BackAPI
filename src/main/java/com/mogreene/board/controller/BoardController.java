@@ -3,13 +3,13 @@ package com.mogreene.board.controller;
 import com.mogreene.board.common.exception.CustomException;
 import com.mogreene.board.common.exception.ErrorCode;
 import com.mogreene.board.dto.BoardDTO;
+import com.mogreene.board.dto.api.ApiResponseDTO;
 import com.mogreene.board.dto.page.PageRequestDTO;
-import com.mogreene.board.dto.page.Pagination;
+import com.mogreene.board.dto.page.PageResponseDTO;
 import com.mogreene.board.service.BoardService;
 import com.mogreene.board.service.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -37,14 +37,18 @@ public class BoardController {
      * @param pageRequestDTO
      * @return
      */
-    // TODO: 2023/03/03 다시 한번 페이지네이션 설명 듣기
     // TODO: 2023/03/04 굳이 페이지 처리를 예외처리할 필요는 없다. 던지기는 해야됨
     @GetMapping("/list")
-    public ResponseEntity<Pagination> getArticleList(PageRequestDTO pageRequestDTO) throws CustomException {
+    public ApiResponseDTO<?> getArticleList(PageRequestDTO pageRequestDTO) throws CustomException {
 
-        Pagination list = boardService.getArticleList(pageRequestDTO);
+        List<BoardDTO> list = boardService.getArticleList(pageRequestDTO);
 
-        return new ResponseEntity<>(list, HttpStatus.OK);
+        return ApiResponseDTO.builder()
+                .resultType(true)
+                .httpStatus(HttpStatus.OK)
+                .resultCode(HttpStatus.OK.value())
+                .resultData(list)
+                .build();
     }
 
     /**
@@ -52,9 +56,9 @@ public class BoardController {
      * @param boardDTO
      */
     @PostMapping("/write")
-    public ResponseEntity<String> postArticle(@RequestPart @Valid BoardDTO boardDTO,
-                                              @RequestPart(value = "file", required = false) MultipartFile[] multipartFile,
-                                              BindingResult bindingResult) throws CustomException, NoSuchAlgorithmException, IOException {
+    public ApiResponseDTO<?> postArticle(@RequestPart @Valid BoardDTO boardDTO,
+                                         @RequestPart(value = "file", required = false) MultipartFile[] multipartFile,
+                                         BindingResult bindingResult) throws NoSuchAlgorithmException, IOException {
 
         if (bindingResult.hasErrors()) {
             throw new CustomException(ErrorCode.INVALID_VALIDATION);
@@ -63,7 +67,12 @@ public class BoardController {
         Long boardNo = boardService.postArticle(boardDTO);
         fileService.uploadFile(boardNo, multipartFile);
 
-        return new ResponseEntity<>("Success", HttpStatus.CREATED);
+        return ApiResponseDTO.builder()
+                .resultType(true)
+                .httpStatus(HttpStatus.NO_CONTENT)
+                .resultCode(HttpStatus.NO_CONTENT.value())
+                .resultData("Success Posting")
+                .build();
     }
 
     /**
@@ -72,11 +81,16 @@ public class BoardController {
      * @return
      */
     @GetMapping("notice/{boardNo}")
-    public ResponseEntity<BoardDTO> getArticleView(@PathVariable("boardNo") Long boardNo) throws CustomException{
+    public ApiResponseDTO<BoardDTO> getArticleView(@PathVariable("boardNo") Long boardNo) throws CustomException{
 
         BoardDTO boardDTO = boardService.getArticleView(boardNo);
 
-        return new ResponseEntity<>(boardDTO, HttpStatus.OK);
+        return ApiResponseDTO.<BoardDTO>builder()
+                .resultType(true)
+                .httpStatus(HttpStatus.OK)
+                .resultCode(HttpStatus.OK.value())
+                .resultData(boardDTO)
+                .build();
     }
 
     /**
@@ -85,11 +99,16 @@ public class BoardController {
      * @return
      */
     @DeleteMapping("delete/{boardNo}")
-    public ResponseEntity<String> deleteArticle(@PathVariable("boardNo") Long boardNo) throws CustomException {
+    public ApiResponseDTO<?> deleteArticle(@PathVariable("boardNo") Long boardNo) throws CustomException {
 
         boardService.deleteArticle(boardNo);
 
-        return new ResponseEntity<>("Delete_ok", HttpStatus.NO_CONTENT);
+        return ApiResponseDTO.builder()
+                .resultType(true)
+                .httpStatus(HttpStatus.NO_CONTENT)
+                .resultCode(HttpStatus.NO_CONTENT.value())
+                .resultData("Delete_ok")
+                .build();
     }
 
     /**
@@ -98,7 +117,7 @@ public class BoardController {
      * @return
      */
     @PutMapping("/modify/{boardNo}")
-    public ResponseEntity<String> modifyArticle(@PathVariable("boardNo") Long boardNo,
+    public ApiResponseDTO<?> modifyArticle(@PathVariable("boardNo") Long boardNo,
                                                 @RequestBody @Valid BoardDTO boardDTO,
                                                 BindingResult bindingResult) throws NoSuchAlgorithmException, CustomException {
 
@@ -110,6 +129,11 @@ public class BoardController {
 
         boardService.modifyArticle(boardDTO);
 
-        return new ResponseEntity<>("Modify_ok", HttpStatus.OK);
+        return ApiResponseDTO.builder()
+                .resultType(true)
+                .httpStatus(HttpStatus.OK)
+                .resultCode(HttpStatus.OK.value())
+                .resultData("Modify_Ok")
+                .build();
     }
 }

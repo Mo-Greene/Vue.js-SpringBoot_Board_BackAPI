@@ -1,11 +1,10 @@
 package com.mogreene.board.service;
 
-import com.mogreene.board.common.exception.CustomException;
 import com.mogreene.board.dao.BoardDAO;
 import com.mogreene.board.dao.ReplyDAO;
 import com.mogreene.board.dto.BoardDTO;
 import com.mogreene.board.dto.page.PageRequestDTO;
-import com.mogreene.board.dto.page.Pagination;
+import com.mogreene.board.dto.page.PageResponseDTO;
 import com.mogreene.board.util.SHA512;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,15 +29,24 @@ public class BoardService {
      */
     // TODO: 2023/03/04 카테고리만 캐쉬로 만들어라
     // TODO: 2023/03/04 메서드이름에 맞게
-    public Pagination getArticleList(PageRequestDTO pageRequestDTO) throws CustomException {
+    public List<BoardDTO> getArticleList(PageRequestDTO pageRequestDTO) {
 
-        List<BoardDTO> list = boardDAO.getArticleList(pageRequestDTO);
+        return boardDAO.getArticleList(pageRequestDTO);
+    }
+
+    /**
+     * 게시글 페이징 데이터
+     * @param pageRequestDTO
+     * @return
+     */
+    // TODO: 2023/03/09 굳이 같이 보낼 필요는 없는것 같다.
+    public PageResponseDTO getArticlePaging(PageRequestDTO pageRequestDTO) {
+
         int total = boardDAO.totalCount(pageRequestDTO);
 
-        return Pagination.withAll()
-                .total(total)
-                .dtoList(list)
+        return PageResponseDTO.withAll()
                 .pageRequestDTO(pageRequestDTO)
+                .total(total)
                 .build();
     }
 
@@ -62,11 +70,7 @@ public class BoardService {
      * @param boardNo
      * @return
      */
-    public BoardDTO getArticleView(Long boardNo) throws CustomException {
-
-        if (boardNo <= 0 || boardDAO.findByBoardNo(boardNo) == null) {
-            throw new RuntimeException();
-        }
+    public BoardDTO getArticleView(Long boardNo) {
 
         boardDAO.viewCount(boardNo);
 

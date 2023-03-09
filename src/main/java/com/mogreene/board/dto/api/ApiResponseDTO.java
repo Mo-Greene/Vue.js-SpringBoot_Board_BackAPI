@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 @Data
 @Builder
@@ -11,8 +12,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ApiResponseDTO<T> {
 
-    private Integer code;
-    private String message;
-    private T data;
+    /* 성공여부 true, false */
+    private boolean resultType = false;
+
+    /* httpStatus */
+    private HttpStatus httpStatus;
+
+    /* http 결과 코드 */
+    private Integer resultCode;
+
+    /* 결과 데이터 */
+    private T resultData;
 
 }

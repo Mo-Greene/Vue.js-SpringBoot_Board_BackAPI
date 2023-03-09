@@ -43,11 +43,6 @@
                board_mod_date,
                board_view,
                c.category_content
-               (SELECT EXISTS
-                   (SELECT 1
-                    FROM file
-                    WHERE board_no = b.board_no))
-               AS is_exist_file
 
         FROM board AS b
             JOIN category AS c

@@ -9,7 +9,7 @@ import java.util.List;
 
 @Getter
 @ToString
-public class Pagination {
+public class PageResponseDTO {
 
     private int page;
     private int size;
@@ -18,13 +18,11 @@ public class Pagination {
     private int endPage;
     private boolean prev;
     private boolean next;
-    private List<BoardDTO> dtoList;
 
     @Builder(builderMethodName = "withAll")
-    public Pagination(PageRequestDTO pageRequestDTO, List<BoardDTO> dtoList, int total) {
+    public PageResponseDTO(PageRequestDTO pageRequestDTO, int total) {
         this.page = pageRequestDTO.getPage();
         this.size = pageRequestDTO.getSize();
-        this.dtoList = dtoList;
 
         this.total = total;
 

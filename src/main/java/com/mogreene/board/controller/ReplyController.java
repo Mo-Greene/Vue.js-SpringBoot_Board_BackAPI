@@ -1,6 +1,7 @@
 package com.mogreene.board.controller;
 
 import com.mogreene.board.dto.ReplyDTO;
+import com.mogreene.board.dto.api.ApiResponseDTO;
 import com.mogreene.board.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,13 +24,18 @@ public class ReplyController {
      * @return
      */
     @PostMapping("/notice/{boardNo}/reply")
-    public ResponseEntity<String> postReply(@PathVariable("boardNo") Long boardNo,
+    public ApiResponseDTO<?> postReply(@PathVariable("boardNo") Long boardNo,
                                             @RequestBody ReplyDTO replyDTO) {
 
         replyDTO.setBoardNo(boardNo);
 
         replyService.postReply(replyDTO);
 
-        return new ResponseEntity<>("Success", HttpStatus.CREATED);
+        return ApiResponseDTO.builder()
+                .resultType(true)
+                .httpStatus(HttpStatus.NO_CONTENT)
+                .resultCode(HttpStatus.NO_CONTENT.value())
+                .resultData("Success")
+                .build();
     }
 }
