@@ -1,6 +1,7 @@
 package com.mogreene.board.service;
 
 import com.mogreene.board.dao.BoardDAO;
+import com.mogreene.board.dao.CategoryDAO;
 import com.mogreene.board.dao.ReplyDAO;
 import com.mogreene.board.dto.BoardDTO;
 import com.mogreene.board.dto.page.PageRequestDTO;
@@ -20,6 +21,7 @@ public class BoardService {
 
     private final BoardDAO boardDAO;
     private final ReplyDAO replyDAO;
+    private final CategoryService categoryService;
     private final SHA512 sha512;
 
     /**
@@ -78,6 +80,9 @@ public class BoardService {
 
         BoardDTO boardDTO = boardDAO.getArticleView(boardNo);
 
+        String categoryContent = categoryService.getCategoryContent(boardNo);
+
+        boardDTO.setCategoryContent(categoryContent);
         boardDTO.setReplyList(replyDAO.getReplyList(boardNo));
 
         return boardDTO;
