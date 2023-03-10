@@ -8,6 +8,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+/**
+ * 댓글 Service
+ * @author mogreene
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -22,7 +26,7 @@ public class ReplyService {
      */
     public void postReply(ReplyDTO replyDTO) throws CustomException {
 
-        if (replyDTO.getBoardNo() <= 0 || boardDAO.findByBoardNo(replyDTO.getBoardNo()) == null) {
+        if (boardDAO.findByBoardNo(replyDTO.getBoardNo()) == null) {
             throw new RuntimeException();
         }
 

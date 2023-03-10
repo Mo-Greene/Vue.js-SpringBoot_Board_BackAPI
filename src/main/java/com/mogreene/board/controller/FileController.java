@@ -17,6 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
+/**
+ * 파일 컨트롤러
+ * @author mogreene
+ */
 @Slf4j
 @RestController
 @RequiredArgsConstructor

@@ -1,20 +1,24 @@
 package com.mogreene.board.service;
 
 import com.mogreene.board.common.status.StatusCode;
+import com.mogreene.board.common.util.SHA512;
 import com.mogreene.board.dao.BoardDAO;
 import com.mogreene.board.dao.CategoryDAO;
 import com.mogreene.board.dao.ReplyDAO;
 import com.mogreene.board.dto.BoardDTO;
 import com.mogreene.board.dto.page.PageRequestDTO;
-import com.mogreene.board.dto.page.PageResponseDTO;
-import com.mogreene.board.common.util.SHA512;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+/**
+ * 게시글 Service
+ * @author mogreene
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -22,7 +26,7 @@ public class BoardService {
 
     private final BoardDAO boardDAO;
     private final ReplyDAO replyDAO;
-    private final CategoryService categoryService;
+    private final CategoryDAO categoryDAO;
     private final SHA512 sha512;
 
     /**
@@ -35,22 +39,6 @@ public class BoardService {
     public List<BoardDTO> getArticleList(PageRequestDTO pageRequestDTO) {
 
         return boardDAO.getArticleList(pageRequestDTO);
-    }
-
-    /**
-     * 게시글 페이징 데이터
-     * @param pageRequestDTO
-     * @return
-     */
-    // TODO: 2023/03/09 굳이 같이 보낼 필요는 없는것 같다.
-    public PageResponseDTO getArticlePaging(PageRequestDTO pageRequestDTO) {
-
-        int total = boardDAO.totalCount(pageRequestDTO);
-
-        return PageResponseDTO.withAll()
-                .pageRequestDTO(pageRequestDTO)
-                .total(total)
-                .build();
     }
 
     /**
@@ -81,7 +69,7 @@ public class BoardService {
 
         BoardDTO boardDTO = boardDAO.getArticleView(boardNo);
 
-        String categoryContent = categoryService.getCategoryContent(boardNo);
+        String categoryContent = getCategoryContent(boardNo);
 
         boardDTO.setCategoryContent(categoryContent);
         boardDTO.setReplyList(replyDAO.getReplyList(boardNo));
@@ -129,5 +117,17 @@ public class BoardService {
             return StatusCode.FAILURE;
         } else
             return StatusCode.SUCCESS;
+    }
+
+    /**
+     * 카테고리 내용 캐시화
+     * @param boardNo
+     * @return
+     */
+    // TODO: 2023/03/10 categoryDAO를 가져왔지만 따로 service를 만들지 않고 맵핑함 => 서비스의 관계를 걸면 안된다고 생각해서
+    @Cacheable(value = "CategoryContent", key = "#boardNo")
+    public String getCategoryContent(Long boardNo) {
+
+        return categoryDAO.getCategoryNum(boardNo);
     }
 }

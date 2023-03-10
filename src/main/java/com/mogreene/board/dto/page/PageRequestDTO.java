@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Positive;
 
+/**
+ * 페이지 response
+ * @author mogreene
+ */
 @Data
 @Builder
 @NoArgsConstructor

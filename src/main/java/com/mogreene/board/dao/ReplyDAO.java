@@ -5,6 +5,10 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+/**
+ * 댓글 DAO
+ * @author mogreene
+ */
 @Mapper
 public interface ReplyDAO {
     /**

@@ -1,12 +1,13 @@
 package com.mogreene.board.dto.page;
 
-import com.mogreene.board.dto.BoardDTO;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.util.List;
-
+/**
+ * 페이지 request
+ * @author mogreene
+ */
 @Getter
 @ToString
 public class PageResponseDTO {

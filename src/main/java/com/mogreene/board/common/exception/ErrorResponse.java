@@ -6,6 +6,10 @@ import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
 
+/**
+ * 커스텀 예외처리 적용시 (사용 x)
+ * @author mogreene
+ */
 @Getter
 @Builder
 public class ErrorResponse {

@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 /**
  * 공통 예외처리
  * @param <T>
+ * @author mogreene
  */
 @Data
 @Builder

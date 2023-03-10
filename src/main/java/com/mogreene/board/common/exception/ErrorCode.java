@@ -4,6 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+/**
+ * 커스텀 예외처리 적용시 (사용 x)
+ * @author mogreene
+ */
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {

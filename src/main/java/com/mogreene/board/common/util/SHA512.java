@@ -5,6 +5,9 @@ import org.springframework.stereotype.Component;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * sha512 암호화 util
+ */
 @Component
 public class SHA512 {
 

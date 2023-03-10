@@ -1,10 +1,10 @@
 package com.mogreene.board.controller;
 
+import com.mogreene.board.common.api.ApiResponseDTO;
 import com.mogreene.board.common.exception.CustomException;
 import com.mogreene.board.common.exception.ErrorCode;
 import com.mogreene.board.common.status.StatusCode;
 import com.mogreene.board.dto.BoardDTO;
-import com.mogreene.board.common.api.ApiResponseDTO;
 import com.mogreene.board.dto.page.PageRequestDTO;
 import com.mogreene.board.service.BoardService;
 import com.mogreene.board.service.FileService;
@@ -20,6 +20,10 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+/**
+ * 게시글 컨트롤러
+ * @author mogreene
+ */
 @Slf4j
 @RestController
 @RequestMapping("/boards")

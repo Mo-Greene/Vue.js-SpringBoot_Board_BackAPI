@@ -11,6 +11,10 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.List;
 
+/**
+ * 게시글 DTO
+ * @author mogreene
+ */
 @Data
 @Builder
 @NoArgsConstructor

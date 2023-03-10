@@ -6,6 +6,10 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+/**
+ * 게시글 DAO
+ * @author mogreene
+ */
 @Mapper
 public interface BoardDAO {
     /**

@@ -9,6 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * 댓글 컨트롤러
+ * @author mogreene
+ */
 @Slf4j
 @RestController
 @RequestMapping("/boards")

@@ -5,6 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 댓글 DTO
+ * @author mogreene
+ */
 @Data
 @Builder
 @NoArgsConstructor

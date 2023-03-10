@@ -6,6 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.core.io.Resource;
 
+/**
+ * 파일 DTO
+ * @author mogreene
+ */
 @Data
 @Builder
 @NoArgsConstructor
