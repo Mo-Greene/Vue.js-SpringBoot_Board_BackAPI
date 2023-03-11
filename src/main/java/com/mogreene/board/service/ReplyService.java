@@ -1,6 +1,5 @@
 package com.mogreene.board.service;
 
-import com.mogreene.board.common.exception.CustomException;
 import com.mogreene.board.dao.BoardDAO;
 import com.mogreene.board.dao.ReplyDAO;
 import com.mogreene.board.dto.ReplyDTO;
@@ -24,7 +23,7 @@ public class ReplyService {
      * 댓글 등록
      * @param replyDTO
      */
-    public void postReply(ReplyDTO replyDTO) throws CustomException {
+    public void postReply(ReplyDTO replyDTO) {
 
         if (boardDAO.findByBoardNo(replyDTO.getBoardNo()) == null) {
             throw new RuntimeException();

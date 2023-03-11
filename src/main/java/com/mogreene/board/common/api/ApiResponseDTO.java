@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 /**
- * 공통 예외처리
+ * 공통 responseDTO
  * @param <T>
  * @author mogreene
  */
@@ -18,7 +18,7 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public class ApiResponseDTO<T> {
 
-    /* 성공여부 true, false */
+    /* 성공여부 */
     private StatusCode resultType;
 
     /* httpStatus */

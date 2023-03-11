@@ -34,8 +34,6 @@ public class BoardService {
      * @param pageRequestDTO
      * @return
      */
-    // TODO: 2023/03/04 카테고리만 캐쉬로 만들어라
-    // TODO: 2023/03/04 메서드이름에 맞게
     public List<BoardDTO> getArticleList(PageRequestDTO pageRequestDTO) {
 
         return boardDAO.getArticleList(pageRequestDTO);
@@ -84,7 +82,7 @@ public class BoardService {
     public void deleteArticle(Long boardNo) {
 
         if (boardNo <= 0 || boardDAO.findByBoardNo(boardNo) == null) {
-            throw new RuntimeException();
+            throw new RuntimeException("없는 게시글 입니다.");
         }
 
         boardDAO.deleteArticle(boardNo);

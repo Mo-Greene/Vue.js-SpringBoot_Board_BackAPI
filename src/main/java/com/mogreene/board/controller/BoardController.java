@@ -1,8 +1,6 @@
 package com.mogreene.board.controller;
 
 import com.mogreene.board.common.api.ApiResponseDTO;
-import com.mogreene.board.common.exception.CustomException;
-import com.mogreene.board.common.exception.ErrorCode;
 import com.mogreene.board.common.status.StatusCode;
 import com.mogreene.board.dto.BoardDTO;
 import com.mogreene.board.dto.page.PageRequestDTO;
@@ -10,6 +8,7 @@ import com.mogreene.board.service.BoardService;
 import com.mogreene.board.service.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.binding.BindingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -39,8 +38,8 @@ public class BoardController {
      * @return
      */
     // TODO: 2023/03/04 굳이 페이지 처리를 예외처리할 필요는 없다. 던지기는 해야됨
-    @GetMapping("/list")
-    public ApiResponseDTO<?> getArticleList(PageRequestDTO pageRequestDTO) throws CustomException {
+    @GetMapping("/")
+    public ApiResponseDTO<?> getArticleList(PageRequestDTO pageRequestDTO) {
 
         List<BoardDTO> list = boardService.getArticleList(pageRequestDTO);
 
@@ -58,11 +57,12 @@ public class BoardController {
      */
     @PostMapping("/write")
     public ApiResponseDTO<?> postArticle(@RequestPart @Valid BoardDTO boardDTO,
-                                         @RequestPart(value = "file", required = false) MultipartFile[] multipartFile,
-                                         BindingResult bindingResult) throws NoSuchAlgorithmException, IOException {
+                                         BindingResult bindingResult,
+                                         @RequestPart(value = "file", required = false) MultipartFile[] multipartFile
+                                         ) throws NoSuchAlgorithmException, IOException {
 
         if (bindingResult.hasErrors()) {
-            throw new CustomException(ErrorCode.INVALID_VALIDATION);
+            throw new BindingException("형식에 맞지 않습니다.");
         }
 
         if (multipartFile != null) {
@@ -95,8 +95,8 @@ public class BoardController {
      * @param boardNo
      * @return
      */
-    @GetMapping("notice/{boardNo}")
-    public ApiResponseDTO<BoardDTO> getArticleView(@PathVariable("boardNo") Long boardNo) throws CustomException{
+    @GetMapping("/notice/{boardNo}")
+    public ApiResponseDTO<BoardDTO> getArticleView(@PathVariable("boardNo") Long boardNo) {
 
         BoardDTO boardDTO = boardService.getArticleView(boardNo);
 
@@ -113,9 +113,8 @@ public class BoardController {
      * @param boardNo
      * @return
      */
-    // TODO: 2023/03/09 fk 가 설정이 되니 삭제가 안된다. 고민하
-    @DeleteMapping("delete/{boardNo}")
-    public ApiResponseDTO<?> deleteArticle(@PathVariable("boardNo") Long boardNo) throws CustomException {
+    @DeleteMapping("/delete/{boardNo}")
+    public ApiResponseDTO<?> deleteArticle(@PathVariable("boardNo") Long boardNo) {
 
         boardService.deleteArticle(boardNo);
 
@@ -135,10 +134,10 @@ public class BoardController {
     @PutMapping("/modify/{boardNo}")
     public ApiResponseDTO<?> modifyArticle(@PathVariable("boardNo") Long boardNo,
                                            @RequestBody @Valid BoardDTO boardDTO,
-                                           BindingResult bindingResult) throws CustomException {
+                                           BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            throw new CustomException(ErrorCode.INVALID_VALIDATION);
+            throw new BindingException("형식에 맞지 않습니다.");
         }
 
         boardDTO.setBoardNo(boardNo);
@@ -160,7 +159,7 @@ public class BoardController {
      * @return
      * @throws NoSuchAlgorithmException
      */
-    @PostMapping("/check/password/{boardNo}")
+    @PostMapping("/password/{boardNo}")
     public ApiResponseDTO<?> passwordCheck(@PathVariable("boardNo") Long boardNo,
                                            @RequestBody BoardDTO boardDTO) throws NoSuchAlgorithmException {
 
@@ -176,12 +175,7 @@ public class BoardController {
                     .build();
         } else {
 
-            return ApiResponseDTO.builder()
-                    .resultType(StatusCode.FAILURE)
-                    .httpStatus(HttpStatus.BAD_REQUEST)
-                    .resultCode(HttpStatus.BAD_REQUEST.value())
-                    .resultData("Invalid Password")
-                    .build();
+            throw new RuntimeException("Invalid Password");
         }
     }
 }

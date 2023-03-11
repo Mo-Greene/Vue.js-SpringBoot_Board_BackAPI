@@ -65,5 +65,6 @@ public class BoardDTO {
     /* 게시글 내 댓글 리스트 */
     private List<ReplyDTO> replyList;
 
+    /* 페이지 ResponseDTO */
     private PageResponseDTO pageResponseDTO;
 }
