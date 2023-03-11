@@ -7,6 +7,7 @@ import com.mogreene.board.dao.CategoryDAO;
 import com.mogreene.board.dao.ReplyDAO;
 import com.mogreene.board.dto.BoardDTO;
 import com.mogreene.board.dto.page.PageRequestDTO;
+import com.mogreene.board.dto.page.PageResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
@@ -40,6 +41,21 @@ public class BoardService {
     }
 
     /**
+     * 페이지 객체
+     * @param pageRequestDTO
+     * @return PageResponseDTO
+     */
+    public PageResponseDTO getPagination(PageRequestDTO pageRequestDTO) {
+
+        int total = boardDAO.totalCount(pageRequestDTO);
+
+        return PageResponseDTO.withAll()
+                .pageRequestDTO(pageRequestDTO)
+                .total(total)
+                .build();
+    }
+
+    /**
      * 게시글 등록
      * @param boardDTO
      * @return 등록된 게시글 pk
@@ -67,6 +83,7 @@ public class BoardService {
 
         BoardDTO boardDTO = boardDAO.getArticleView(boardNo);
 
+        // TODO: 2023/03/11 캐쉬 수정
         String categoryContent = getCategoryContent(boardNo);
 
         boardDTO.setCategoryContent(categoryContent);
@@ -104,10 +121,10 @@ public class BoardService {
      * @return StatusCode
      * @throws NoSuchAlgorithmException
      */
-    public StatusCode passwordCheck(BoardDTO boardDTO) throws NoSuchAlgorithmException {
+    public StatusCode passwordCheck(Long boardNo, String boardPassword) throws NoSuchAlgorithmException {
 
-        String password = sha512.encrypt(boardDTO.getBoardPassword());
-        String dbPassword = boardDAO.dbPassword(boardDTO);
+        String password = sha512.encrypt(boardPassword);
+        String dbPassword = boardDAO.dbPassword(boardNo);
 
         if (!password.equals(dbPassword)) {
             log.error("비밀번호가 같지 않습니다.");
@@ -123,6 +140,7 @@ public class BoardService {
      * @return
      */
     // TODO: 2023/03/10 categoryDAO를 가져왔지만 따로 service를 만들지 않고 맵핑함 => 서비스의 관계를 걸면 안된다고 생각해서
+    // TODO: 2023/03/11 이거 완전 실패 게시판 캐시들을 정확히 이해하고 사용하자
     @Cacheable(value = "CategoryContent", key = "#boardNo")
     public String getCategoryContent(Long boardNo) {
 

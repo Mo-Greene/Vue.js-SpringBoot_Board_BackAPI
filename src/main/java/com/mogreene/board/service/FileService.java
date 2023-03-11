@@ -38,6 +38,7 @@ public class FileService {
     public void uploadFile(Long boardNo, MultipartFile[] multipartFiles) throws IOException {
 
         for (MultipartFile files : multipartFiles) {
+
             String fileOriginalName = files.getOriginalFilename();
 
             String uuid = UUID.randomUUID().toString();
@@ -70,7 +71,6 @@ public class FileService {
 
         String str = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd/"));
         String folderPath = str.replace("/", File.separator);
-
         File uploadPathFolder = new File(uploadPath, folderPath);
 
         if (!uploadPathFolder.exists()) {
@@ -87,11 +87,8 @@ public class FileService {
     public FileDTO downloadFile(Long fileNo) throws IOException {
 
         FileDTO fileDTO = fileDAO.getFile(fileNo);
-
         UrlResource resource = new UrlResource("file:" + fileDTO.getFilePath());
-
         String encodeName = UriUtils.encode(fileDTO.getFileOriginalName(), StandardCharsets.UTF_8);
-
         String contentDisposition = "attachment; filename=\"" + encodeName + "\"";
 
         fileDTO.setResource(resource);

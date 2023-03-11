@@ -4,6 +4,7 @@ import com.mogreene.board.common.api.ApiResponseDTO;
 import com.mogreene.board.common.status.StatusCode;
 import com.mogreene.board.dto.BoardDTO;
 import com.mogreene.board.dto.page.PageRequestDTO;
+import com.mogreene.board.dto.page.PageResponseDTO;
 import com.mogreene.board.service.BoardService;
 import com.mogreene.board.service.FileService;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BoardController {
 
+    // TODO: 2023/03/11 ResponseEntity 안에 감싸는 형태로 가야된다! 
+
     private final BoardService boardService;
     private final FileService fileService;
 
@@ -37,23 +40,33 @@ public class BoardController {
      * @param pageRequestDTO
      * @return
      */
-    // TODO: 2023/03/04 굳이 페이지 처리를 예외처리할 필요는 없다. 던지기는 해야됨
-    @GetMapping("/")
+    @GetMapping("/list")
     public ApiResponseDTO<?> getArticleList(PageRequestDTO pageRequestDTO) {
 
-        List<BoardDTO> list = boardService.getArticleList(pageRequestDTO);
+        List<BoardDTO> boardList = boardService.getArticleList(pageRequestDTO);
+
+        PageResponseDTO responseDTO = boardService.getPagination(pageRequestDTO);
+
+        Map<String, Object> responseData = new HashMap<>();
+        responseData.put("board", boardList);
+        responseData.put("page", responseDTO);
 
         return ApiResponseDTO.builder()
                 .resultType(StatusCode.SUCCESS)
                 .httpStatus(HttpStatus.OK)
                 .resultCode(HttpStatus.OK.value())
-                .resultData(list)
+                .resultData(responseData)
                 .build();
     }
 
     /**
      * 게시글 등록
      * @param boardDTO
+     * @param bindingResult
+     * @param multipartFile
+     * @return
+     * @throws NoSuchAlgorithmException
+     * @throws IOException
      */
     @PostMapping("/write")
     public ApiResponseDTO<?> postArticle(@RequestPart @Valid BoardDTO boardDTO,
@@ -161,11 +174,9 @@ public class BoardController {
      */
     @PostMapping("/password/{boardNo}")
     public ApiResponseDTO<?> passwordCheck(@PathVariable("boardNo") Long boardNo,
-                                           @RequestBody BoardDTO boardDTO) throws NoSuchAlgorithmException {
+                                           @RequestBody String boardPassword) throws NoSuchAlgorithmException {
 
-        boardDTO.setBoardNo(boardNo);
-
-        if (boardService.passwordCheck(boardDTO) == StatusCode.SUCCESS) {
+        if (boardService.passwordCheck(boardNo, boardPassword) == StatusCode.SUCCESS) {
 
             return ApiResponseDTO.builder()
                     .resultType(StatusCode.SUCCESS)

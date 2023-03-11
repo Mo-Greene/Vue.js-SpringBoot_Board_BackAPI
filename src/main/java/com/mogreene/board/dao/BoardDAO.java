@@ -60,10 +60,10 @@ public interface BoardDAO {
 
     /**
      * DB 비밀번호 확인
-     * @param boardDTO
+     * @param boardNo
      * @return
      */
-    String dbPassword(BoardDTO boardDTO);
+    String dbPassword(Long boardNo);
 
     /**
      * 게시글 존재 여부 확인

@@ -12,6 +12,7 @@
             (#{fileOriginalName}, #{fileName}, #{filePath}, #{boardNo})
     </insert>
 
+    <!--파일 다운-->
     <select id="getFile" parameterType="Long" resultType="FileDTO">
         SELECT *
 

@@ -21,7 +21,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    // TODO: 2023/03/09 커스텀에러를 만들어서 모든 에러를 캐치할 수 없다. 그러니 런타임을 잘 활용하자
+    // TODO: 2023/03/09 커스텀에러를 만들어서 모든 에러를 캐치할 수 없다.
     // TODO: 2023/03/09 이게 맞는 예외처리라고는 생각하지 않지만 이런 방식으로 처리하는게 맞는건지
 
     /**
@@ -42,6 +42,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
     }
 
+    // TODO: 2023/03/11 에러메세지가 성공처리로 가고있다.
     /**
      * BindingException
      * @param e

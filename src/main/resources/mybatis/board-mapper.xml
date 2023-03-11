@@ -30,7 +30,7 @@
 
         FROM board AS b
 
-        <include refid="search"></include>
+        <include refid="search"/>
     </select>
 
     <!--페이지 네이션 + 검색조건 데이터-->
@@ -48,11 +48,11 @@
             JOIN category AS c
                 ON b.category_no = c.category_no
 
-        <include refid="search"></include>
+        <include refid="search"/>
 
-        ORDER BY board_no
+        ORDER BY board_no DESC
 
-        DESC LIMIT #{skip}, #{size}
+        LIMIT #{skip}, #{size}
     </select>
 
     <!--게시글 등록-->

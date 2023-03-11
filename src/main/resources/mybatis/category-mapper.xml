@@ -2,6 +2,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mogreene.board.dao.CategoryDAO">
+
     <!--카테고리 내용-->
     <select id="getCategoryNum" resultType="String">
         SELECT c.category_content
