@@ -19,23 +19,24 @@
   </div>
 </template>
 
-<script>
-export default {
-  data () {
-    return {
-      boardList: []
-    }
-  },
-  created () {
-    this.getBoardList()
-  },
-  methods: {
-    async getBoardList () {
-      this.boardList = await this.$api('http://localhost:8080/boards/list', 'get')
-      console.log(this.getBoardList())
-    }
-  }
-}
+<script setup>
+
+// export default {
+//   data () {
+//     return {
+//       boardList: []
+//     }
+//   },
+//   created () {
+//     this.getBoardList()
+//   },
+//   methods: {
+//     async getBoardList () {
+//       this.boardList = await this.$api('http://localhost:8080/boards/list', 'get')
+//       console.log(this.getBoardList())
+//     }
+//   }
+// }
 </script>
 
 <style scoped>

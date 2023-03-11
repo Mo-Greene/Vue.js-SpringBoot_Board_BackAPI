@@ -18,7 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 게시글 컨트롤러
@@ -30,7 +32,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BoardController {
 
-    // TODO: 2023/03/11 ResponseEntity 안에 감싸는 형태로 가야된다! 
+    // TODO: 2023/03/11 ResponseEntity 안에 감싸는 형태로 가야된다!
 
     private final BoardService boardService;
     private final FileService fileService;
@@ -168,7 +170,7 @@ public class BoardController {
     /**
      * 비밀번호 확인 (게시글 수정 + 삭제)
      * @param boardNo
-     * @param boardDTO
+     * @param boardPassword
      * @return
      * @throws NoSuchAlgorithmException
      */
