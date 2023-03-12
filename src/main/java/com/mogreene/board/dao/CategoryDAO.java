@@ -12,6 +12,6 @@ public interface CategoryDAO {
     /**
      * 카테고리 내용
      */
-    String getCategoryNum(Long boardNo);
+    String getCategoryNum(Long categoryNo);
 
 }

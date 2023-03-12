@@ -26,7 +26,7 @@ public class ReplyService {
     public void postReply(ReplyDTO replyDTO) {
 
         if (boardDAO.findByBoardNo(replyDTO.getBoardNo()) == null) {
-            throw new RuntimeException();
+            throw new RuntimeException("맞지 않는 게시글 입니다.");
         }
 
         replyDAO.postReply(replyDTO);

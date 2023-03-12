@@ -5,12 +5,10 @@
 
     <!--카테고리 내용-->
     <select id="getCategoryNum" resultType="String">
-        SELECT c.category_content
+        SELECT category_content
 
-        FROM board AS b
-                 JOIN category AS c
-                      ON b.category_no = c.category_no
+        FROM category
 
-        WHERE b.board_no = #{boardNo}
+        WHERE category_no = #{categoryNo}
     </select>
 </mapper>

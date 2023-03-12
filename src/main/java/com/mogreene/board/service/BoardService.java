@@ -1,6 +1,5 @@
 package com.mogreene.board.service;
 
-import com.mogreene.board.common.status.StatusCode;
 import com.mogreene.board.common.util.SHA512;
 import com.mogreene.board.dao.BoardDAO;
 import com.mogreene.board.dao.CategoryDAO;
@@ -83,7 +82,7 @@ public class BoardService {
 
         BoardDTO boardDTO = boardDAO.getArticleView(boardNo);
 
-        // TODO: 2023/03/11 캐쉬 수정
+        // TODO: 2023/03/11 캐쉬 수정 해야됨
         String categoryContent = getCategoryContent(boardNo);
 
         boardDTO.setCategoryContent(categoryContent);
@@ -121,29 +120,29 @@ public class BoardService {
      * @return StatusCode
      * @throws NoSuchAlgorithmException
      */
-    public StatusCode passwordCheck(Long boardNo, String boardPassword) throws NoSuchAlgorithmException {
+    public String passwordCheck(BoardDTO boardDTO) throws NoSuchAlgorithmException {
 
-        String password = sha512.encrypt(boardPassword);
-        String dbPassword = boardDAO.dbPassword(boardNo);
+        String password = sha512.encrypt(boardDTO.getBoardPassword());
+        String dbPassword = boardDAO.dbPassword(boardDTO.getBoardNo());
 
         if (!password.equals(dbPassword)) {
             log.error("비밀번호가 같지 않습니다.");
 
-            return StatusCode.FAILURE;
-        } else
-            return StatusCode.SUCCESS;
+            return "FAILURE";
+        } else {
+
+            return "SUCCESS";
+        }
     }
 
     /**
      * 카테고리 내용 캐시화
-     * @param boardNo
+     * @param categoryNo
      * @return
      */
-    // TODO: 2023/03/10 categoryDAO를 가져왔지만 따로 service를 만들지 않고 맵핑함 => 서비스의 관계를 걸면 안된다고 생각해서
-    // TODO: 2023/03/11 이거 완전 실패 게시판 캐시들을 정확히 이해하고 사용하자
-    @Cacheable(value = "CategoryContent", key = "#boardNo")
-    public String getCategoryContent(Long boardNo) {
+    @Cacheable(value = "CategoryContent", key = "#categoryNo")
+    public String getCategoryContent(Long categoryNo) {
 
-        return categoryDAO.getCategoryNum(boardNo);
+        return categoryDAO.getCategoryNum(categoryNo);
     }
 }
