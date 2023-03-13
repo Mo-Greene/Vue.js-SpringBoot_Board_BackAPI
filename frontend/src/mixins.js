@@ -8,7 +8,6 @@ export default {
         url,
         data
       }).catch(e => {
-        console.log(e)
       })).data
     }
   }

@@ -29,7 +29,6 @@ import java.util.Map;
  */
 @Slf4j
 @RestController
-@RequestMapping("/boards")
 @RequiredArgsConstructor
 public class BoardController {
 
@@ -43,7 +42,7 @@ public class BoardController {
      * @param pageRequestDTO
      * @return
      */
-    @GetMapping("/list")
+    @GetMapping("/boards/list")
     public ResponseEntity<ApiResponseDTO<?>> getArticleList(PageRequestDTO pageRequestDTO) {
 
         List<BoardDTO> boardList = boardService.getArticleList(pageRequestDTO);
@@ -72,7 +71,7 @@ public class BoardController {
      * @throws NoSuchAlgorithmException
      * @throws IOException
      */
-    @PostMapping("/write")
+    @PostMapping("/boards/write")
     public ResponseEntity<ApiResponseDTO<?>> postArticle(@RequestPart @Valid BoardDTO boardDTO,
                                          BindingResult bindingResult,
                                          @RequestPart(value = "file", required = false) MultipartFile[] multipartFile
@@ -115,7 +114,7 @@ public class BoardController {
      * @param boardNo
      * @return
      */
-    @GetMapping("/notice/{boardNo}")
+    @GetMapping("/boards/notice/{boardNo}")
     public ResponseEntity<ApiResponseDTO<?>> getArticleView(@PathVariable("boardNo") Long boardNo) {
 
         BoardDTO boardDTO = boardService.getArticleView(boardNo);
@@ -134,7 +133,7 @@ public class BoardController {
      * @param boardNo
      * @return
      */
-    @DeleteMapping("/delete/{boardNo}")
+    @DeleteMapping("/boards/delete/{boardNo}")
     public ResponseEntity<?> deleteArticle(@PathVariable("boardNo") Long boardNo) {
 
         boardService.deleteArticle(boardNo);
@@ -147,7 +146,7 @@ public class BoardController {
      * @param boardDTO
      * @return
      */
-    @PutMapping("/modify/{boardNo}")
+    @PutMapping("/boards/modify/{boardNo}")
     public ResponseEntity<ApiResponseDTO<?>> modifyArticle(@PathVariable("boardNo") Long boardNo,
                                            @RequestBody @Valid BoardDTO boardDTO,
                                            BindingResult bindingResult) {
@@ -177,7 +176,7 @@ public class BoardController {
      * @throws NoSuchAlgorithmException
      */
     // TODO: 2023/03/12 boardDTO 안에 들어간 boardPassword 인스턴스와 파라미터로 받은 boardPassword 는 다른 값으로 sha512가 변경시켜서 boardDTO 로 받아옴
-    @PostMapping("/password/{boardNo}")
+    @PostMapping("/boards/password/{boardNo}")
     public ResponseEntity<?> passwordCheck(@PathVariable("boardNo") Long boardNo,
                                            @RequestBody BoardDTO boardDTO) throws NoSuchAlgorithmException {
 
