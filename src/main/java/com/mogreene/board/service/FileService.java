@@ -35,7 +35,7 @@ public class FileService {
     /**
      * 다중 파일 업로드
      *
-     * @param files 
+     * @param files
      */
     public void uploadFile(Long boardNo, MultipartFile files) throws IOException {
 

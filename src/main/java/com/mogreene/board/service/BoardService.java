@@ -65,8 +65,8 @@ public class BoardService {
         String password = sha512.encrypt(boardDTO.getBoardPassword());
         boardDTO.setBoardPassword(password);
 
-        int categoryNo = Integer.parseInt(boardDTO.getCategoryNo());
-        boardDTO.setBoardNo((long) categoryNo);
+        Long categoryNo = Long.parseLong(boardDTO.getCategoryNo());
+        boardDTO.setBoardNo(categoryNo);
 
         boardDAO.postArticle(boardDTO);
 
