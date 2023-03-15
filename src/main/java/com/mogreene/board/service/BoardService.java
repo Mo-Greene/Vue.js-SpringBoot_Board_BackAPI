@@ -63,8 +63,10 @@ public class BoardService {
     public Long postArticle(BoardDTO boardDTO) throws NoSuchAlgorithmException {
 
         String password = sha512.encrypt(boardDTO.getBoardPassword());
-
         boardDTO.setBoardPassword(password);
+
+        int categoryNo = Integer.parseInt(boardDTO.getCategoryNo());
+        boardDTO.setBoardNo((long) categoryNo);
 
         boardDAO.postArticle(boardDTO);
 

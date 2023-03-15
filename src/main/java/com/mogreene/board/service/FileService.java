@@ -19,6 +19,7 @@ import java.util.UUID;
 
 /**
  * 파일 Service
+ *
  * @author mogreene
  */
 @Slf4j
@@ -33,38 +34,37 @@ public class FileService {
 
     /**
      * 다중 파일 업로드
-     * @param multipartFiles
+     *
+     * @param files 
      */
-    public void uploadFile(Long boardNo, MultipartFile[] multipartFiles) throws IOException {
+    public void uploadFile(Long boardNo, MultipartFile files) throws IOException {
 
-        for (MultipartFile files : multipartFiles) {
+        String fileOriginalName = files.getOriginalFilename();
 
-            String fileOriginalName = files.getOriginalFilename();
+        String uuid = UUID.randomUUID().toString();
+        String extension = fileOriginalName.substring(fileOriginalName.lastIndexOf("."));
 
-            String uuid = UUID.randomUUID().toString();
-            String extension = fileOriginalName.substring(fileOriginalName.lastIndexOf("."));
+        String fileName = uuid + extension;
+        String folderPath = makeFolder();
 
-            String fileName = uuid + extension;
-            String folderPath = makeFolder();
+        String filePath = uploadPath + folderPath + fileName;
 
-            String filePath = uploadPath + folderPath + fileName;
+        FileDTO fileDTO = FileDTO.builder()
+                .fileOriginalName(fileOriginalName)
+                .fileName(fileName)
+                .filePath(filePath)
+                .boardNo(boardNo)
+                .build();
 
-            FileDTO fileDTO = FileDTO.builder()
-                    .fileOriginalName(fileOriginalName)
-                    .fileName(fileName)
-                    .filePath(filePath)
-                    .boardNo(boardNo)
-                    .build();
+        files.transferTo(new File(filePath));
 
-            files.transferTo(new File(filePath));
-
-            fileDAO.saveFile(fileDTO);
-        }
+        fileDAO.saveFile(fileDTO);
 
     }
 
     /**
      * 파일 저장시 날짜별로 폴더 만들어서 보관 메서드
+     *
      * @return
      */
     private String makeFolder() {
@@ -81,6 +81,7 @@ public class FileService {
 
     /**
      * 파일 다운로드
+     *
      * @param fileNo
      * @return
      */

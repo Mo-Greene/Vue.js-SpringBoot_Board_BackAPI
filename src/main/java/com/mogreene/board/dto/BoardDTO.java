@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -43,6 +44,9 @@ public class BoardDTO {
     @Pattern(regexp = "[a-zA-Z1-9]{4,16}")
     private String boardPassword;
 
+    /* 게시글 비밀번호 확인 */
+    private String boardPasswordCheck;
+
     /* 게시글 생성일자 */
     private String boardRegDate;
 
@@ -53,7 +57,8 @@ public class BoardDTO {
     private int boardView;
 
     /* 카테고리 fk */
-    private int categoryNo;
+    @NotBlank
+    private String categoryNo;
 
     /* 카테고리 내용 */
     private String categoryContent;

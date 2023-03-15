@@ -31,9 +31,6 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 public class BoardController {
-
-    // TODO: 2023/03/11 ResponseEntity 안에 감싸는 형태로 가야된다!
-
     private final BoardService boardService;
     private final FileService fileService;
 
@@ -42,7 +39,7 @@ public class BoardController {
      * @param pageRequestDTO
      * @return
      */
-    @GetMapping("/boards/list")
+    @GetMapping("/boards")
     public ResponseEntity<ApiResponseDTO<?>> getArticleList(PageRequestDTO pageRequestDTO) {
 
         List<BoardDTO> boardList = boardService.getArticleList(pageRequestDTO);
@@ -74,7 +71,7 @@ public class BoardController {
     @PostMapping("/boards/write")
     public ResponseEntity<ApiResponseDTO<?>> postArticle(@RequestPart @Valid BoardDTO boardDTO,
                                          BindingResult bindingResult,
-                                         @RequestPart(value = "file", required = false) MultipartFile[] multipartFile
+                                         @RequestPart(value = "file", required = false) MultipartFile multipartFile
                                          ) throws NoSuchAlgorithmException, IOException {
 
         if (bindingResult.hasErrors()) {
