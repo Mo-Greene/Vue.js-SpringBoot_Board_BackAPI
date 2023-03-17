@@ -65,9 +65,6 @@ public class BoardService {
         String password = sha512.encrypt(boardDTO.getBoardPassword());
         boardDTO.setBoardPassword(password);
 
-        Long categoryNo = Long.parseLong(boardDTO.getCategoryNo());
-        boardDTO.setBoardNo(categoryNo);
-
         boardDAO.postArticle(boardDTO);
 
         return boardDTO.getBoardNo();
@@ -83,11 +80,6 @@ public class BoardService {
         boardDAO.viewCount(boardNo);
 
         BoardDTO boardDTO = boardDAO.getArticleView(boardNo);
-
-        // TODO: 2023/03/11 캐쉬 수정 해야됨
-        String categoryContent = getCategoryContent(boardNo);
-
-        boardDTO.setCategoryContent(categoryContent);
         boardDTO.setReplyList(replyDAO.getReplyList(boardNo));
 
         return boardDTO;
@@ -143,8 +135,8 @@ public class BoardService {
      * @return
      */
     @Cacheable(value = "CategoryContent", key = "#categoryNo")
-    public String getCategoryContent(Long categoryNo) {
+    public String getCategoryContent(int categoryNo) {
 
-        return categoryDAO.getCategoryNum(categoryNo);
+        return categoryDAO.getCategory(categoryNo);
     }
 }

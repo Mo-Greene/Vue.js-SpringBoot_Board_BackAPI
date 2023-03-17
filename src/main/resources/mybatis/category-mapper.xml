@@ -5,7 +5,7 @@
 
     <!--카테고리 내용-->
     <select id="getCategoryNum" resultType="String">
-        SELECT category_content
+        SELECT *
 
         FROM category
 

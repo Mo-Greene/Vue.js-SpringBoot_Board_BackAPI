@@ -57,8 +57,7 @@ public class BoardDTO {
     private int boardView;
 
     /* 카테고리 fk */
-    @NotBlank
-    private String categoryNo;
+    private int categoryNo;
 
     /* 카테고리 내용 */
     private String categoryContent;

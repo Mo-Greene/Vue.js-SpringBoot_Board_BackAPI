@@ -75,6 +75,7 @@
                board_reg_date,
                board_mod_date,
                board_view,
+               c.category_content,
                (SELECT EXISTS
                    (SELECT 1
                     FROM file
@@ -82,6 +83,8 @@
                AS is_exist_file
 
         FROM board AS b
+            JOIN category c
+                ON c.category_no = b.category_no
 
         WHERE b.board_no = #{boardNo}
     </select>
