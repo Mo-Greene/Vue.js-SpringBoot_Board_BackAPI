@@ -80,6 +80,10 @@ public class BoardService {
         boardDAO.viewCount(boardNo);
 
         BoardDTO boardDTO = boardDAO.getArticleView(boardNo);
+
+        String categoryContent = getCategoryContent(boardDTO.getCategoryNo());
+
+        boardDTO.setCategoryContent(categoryContent);
         boardDTO.setReplyList(replyDAO.getReplyList(boardNo));
 
         return boardDTO;
