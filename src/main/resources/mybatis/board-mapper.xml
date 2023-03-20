@@ -75,7 +75,7 @@
                board_reg_date,
                board_mod_date,
                board_view,
-               c.category_content,
+               c.category_no,
                (SELECT EXISTS
                    (SELECT 1
                     FROM file

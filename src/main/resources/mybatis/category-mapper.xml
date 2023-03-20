@@ -4,8 +4,8 @@
 <mapper namespace="com.mogreene.board.dao.CategoryDAO">
 
     <!--카테고리 내용-->
-    <select id="getCategoryNum" resultType="String">
-        SELECT *
+    <select id="getCategory" resultType="String">
+        SELECT category_content
 
         FROM category
 
