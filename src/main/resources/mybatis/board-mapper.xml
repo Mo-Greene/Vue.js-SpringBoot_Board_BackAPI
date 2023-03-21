@@ -42,6 +42,7 @@
                board_reg_date,
                board_mod_date,
                board_view,
+               b.category_no,
                c.category_content
 
         FROM board AS b
