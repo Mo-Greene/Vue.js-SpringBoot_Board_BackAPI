@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
  */
 @Slf4j
 @RestController
-@RequestMapping("/boards")
 @RequiredArgsConstructor
 public class ReplyController {
 
@@ -27,9 +26,12 @@ public class ReplyController {
      * @param replyDTO
      * @return
      */
-    @PostMapping("/notice/reply/{boardNo}")
+    @PostMapping("/boards/notice/reply/{boardNo}")
     public ResponseEntity<ApiResponseDTO<?>> postReply(@PathVariable("boardNo") Long boardNo,
                                                       @RequestBody ReplyDTO replyDTO) {
+
+        log.info("boardNo : " + boardNo);
+        log.info("replyDTO : " + replyDTO);
 
         replyDTO.setBoardNo(boardNo);
 
