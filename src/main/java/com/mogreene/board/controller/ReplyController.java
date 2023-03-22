@@ -30,9 +30,6 @@ public class ReplyController {
     public ResponseEntity<ApiResponseDTO<?>> postReply(@PathVariable("boardNo") Long boardNo,
                                                       @RequestBody ReplyDTO replyDTO) {
 
-        log.info("boardNo : " + boardNo);
-        log.info("replyDTO : " + replyDTO);
-
         replyDTO.setBoardNo(boardNo);
 
         replyService.postReply(replyDTO);

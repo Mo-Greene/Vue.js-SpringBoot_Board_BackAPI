@@ -172,7 +172,6 @@ public class BoardController {
      * @return
      * @throws NoSuchAlgorithmException
      */
-    // TODO: 2023/03/12 boardDTO 안에 들어간 boardPassword 인스턴스와 파라미터로 받은 boardPassword 는 다른 값으로 sha512가 변경시켜서 boardDTO 로 받아옴
     @PostMapping("/boards/password/{boardNo}")
     public ResponseEntity<?> passwordCheck(@PathVariable("boardNo") Long boardNo,
                                            @RequestBody BoardDTO boardDTO) throws NoSuchAlgorithmException {
