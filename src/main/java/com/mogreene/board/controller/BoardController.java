@@ -42,18 +42,21 @@ public class BoardController {
     @GetMapping("/boards")
     public ResponseEntity<ApiResponseDTO<?>> getArticleList(PageRequestDTO pageRequestDTO) {
 
-        List<BoardDTO> boardList = boardService.getArticleList(pageRequestDTO);
+//        List<BoardDTO> boardList = boardService.getArticleList(pageRequestDTO);
+//
+//        PageResponseDTO responseDTO = boardService.getPagination(pageRequestDTO);
+//
+//        Map<String, Object> responseData = new HashMap<>();
+//        responseData.put("board", boardList);
+//        responseData.put("page", responseDTO);
 
-        PageResponseDTO responseDTO = boardService.getPagination(pageRequestDTO);
 
-        Map<String, Object> responseData = new HashMap<>();
-        responseData.put("board", boardList);
-        responseData.put("page", responseDTO);
+        List<BoardDTO> allBoardDTO = boardService.getAllArticle(pageRequestDTO);
 
         ApiResponseDTO<?> apiResponseDTO = ApiResponseDTO.builder()
                 .httpStatus(HttpStatus.OK)
                 .resultCode(HttpStatus.OK.value())
-                .resultData(responseData)
+                .resultData(allBoardDTO)
                 .build();
 
         return new ResponseEntity<>(apiResponseDTO, HttpStatus.OK);

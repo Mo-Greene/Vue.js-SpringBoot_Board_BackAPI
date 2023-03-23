@@ -39,6 +39,11 @@ public class BoardService {
         return boardDAO.getArticleList(pageRequestDTO);
     }
 
+    public List<BoardDTO> getAllArticle(PageRequestDTO pageRequestDTO) {
+
+        return boardDAO.getAllArticle(pageRequestDTO);
+    }
+
     /**
      * 페이지 객체
      * @param pageRequestDTO

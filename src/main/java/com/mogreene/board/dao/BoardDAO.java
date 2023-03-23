@@ -18,6 +18,7 @@ public interface BoardDAO {
      * @return
      */
     List<BoardDTO> getArticleList(PageRequestDTO pageRequestDTO);
+    List<BoardDTO> getAllArticle(PageRequestDTO pageRequestDTO);
 
     /**
      * 게시글 총 개수
