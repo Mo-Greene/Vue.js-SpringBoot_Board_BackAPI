@@ -157,7 +157,7 @@ public class BoardController {
                                                            BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            throw new BindingException("형식에 맞지 않습니다.");
+            throw new BindingException(String.valueOf(bindingResult.getFieldError()));
         }
 
         boardDTO.setBoardNo(boardNo);
