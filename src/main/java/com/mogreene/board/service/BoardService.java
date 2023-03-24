@@ -109,7 +109,6 @@ public class BoardService {
      * 게시글 수정
      * @param boardDTO
      */
-    // TODO: 2023/03/07 예외처리 관해선 좀 더 생각해보자
     public void modifyArticle(BoardDTO boardDTO) {
 
         boardDAO.modifyArticle(boardDTO);

@@ -25,6 +25,7 @@ import java.util.Map;
 
 /**
  * 게시글 컨트롤러
+ *
  * @author mogreene
  */
 @Slf4j
@@ -36,6 +37,7 @@ public class BoardController {
 
     /**
      * 게시글 전체 조회
+     *
      * @param pageRequestDTO
      * @return
      */
@@ -43,20 +45,19 @@ public class BoardController {
     public ResponseEntity<ApiResponseDTO<?>> getArticleList(PageRequestDTO pageRequestDTO) {
 
 //        List<BoardDTO> boardList = boardService.getArticleList(pageRequestDTO);
-//
-//        PageResponseDTO responseDTO = boardService.getPagination(pageRequestDTO);
-//
-//        Map<String, Object> responseData = new HashMap<>();
-//        responseData.put("board", boardList);
-//        responseData.put("page", responseDTO);
-
 
         List<BoardDTO> allBoardDTO = boardService.getAllArticle(pageRequestDTO);
+
+        PageResponseDTO responseDTO = boardService.getPagination(pageRequestDTO);
+
+        Map<String, Object> responseData = new HashMap<>();
+        responseData.put("board", allBoardDTO);
+        responseData.put("page", responseDTO);
 
         ApiResponseDTO<?> apiResponseDTO = ApiResponseDTO.builder()
                 .httpStatus(HttpStatus.OK)
                 .resultCode(HttpStatus.OK.value())
-                .resultData(allBoardDTO)
+                .resultData(responseData)
                 .build();
 
         return new ResponseEntity<>(apiResponseDTO, HttpStatus.OK);
@@ -64,6 +65,7 @@ public class BoardController {
 
     /**
      * 게시글 등록
+     *
      * @param boardDTO
      * @param bindingResult
      * @param multipartFile
@@ -73,9 +75,9 @@ public class BoardController {
      */
     @PostMapping("/boards/write")
     public ResponseEntity<ApiResponseDTO<?>> postArticle(@RequestPart @Valid BoardDTO boardDTO,
-                                         BindingResult bindingResult,
-                                         @RequestPart(value = "file", required = false) MultipartFile multipartFile
-                                         ) throws NoSuchAlgorithmException, IOException {
+                                                         BindingResult bindingResult,
+                                                         @RequestPart(value = "file", required = false) MultipartFile multipartFile
+    ) throws NoSuchAlgorithmException, IOException {
 
         if (bindingResult.hasErrors()) {
             throw new BindingException();
@@ -93,7 +95,7 @@ public class BoardController {
                     .resultData("Success Posting With Files")
                     .build();
 
-            return new ResponseEntity<>(apiResponseDTO, HttpStatus.CREATED) ;
+            return new ResponseEntity<>(apiResponseDTO, HttpStatus.CREATED);
 
         } else {
 
@@ -111,6 +113,7 @@ public class BoardController {
 
     /**
      * 게시글 상세조회
+     *
      * @param boardNo
      * @return
      */
@@ -130,6 +133,7 @@ public class BoardController {
 
     /**
      * 게시글 삭제
+     *
      * @param boardNo
      * @return
      */
@@ -143,13 +147,14 @@ public class BoardController {
 
     /**
      * 게시글 수정
+     *
      * @param boardDTO
      * @return
      */
     @PutMapping("/boards/modify/{boardNo}")
     public ResponseEntity<ApiResponseDTO<?>> modifyArticle(@PathVariable("boardNo") Long boardNo,
-                                           @RequestBody @Valid BoardDTO boardDTO,
-                                           BindingResult bindingResult) {
+                                                           @RequestBody @Valid BoardDTO boardDTO,
+                                                           BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             throw new BindingException("형식에 맞지 않습니다.");
@@ -170,6 +175,7 @@ public class BoardController {
 
     /**
      * 비밀번호 확인 (게시글 수정 + 삭제)
+     *
      * @param boardNo
      * @param boardDTO
      * @return

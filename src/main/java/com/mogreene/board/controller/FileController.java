@@ -33,7 +33,6 @@ public class FileController {
      * @return
      * @throws IOException
      */
-    // TODO: 2023/03/09 http 헤더를 처리하기 위해 이렇게 처리했는데 올바른 결과값으로 가는지는 잘 모르겠다. 포스트맨 확인x
     @GetMapping("/download/{fileNo}")
     public ResponseEntity<ApiResponseDTO<Resource>> fileDown(@PathVariable("fileNo") Long fileNo) throws IOException {
 
