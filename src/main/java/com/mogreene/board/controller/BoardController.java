@@ -44,14 +44,15 @@ public class BoardController {
     @GetMapping("/boards")
     public ResponseEntity<ApiResponseDTO<?>> getArticleList(PageRequestDTO pageRequestDTO) {
 
-//        List<BoardDTO> boardList = boardService.getArticleList(pageRequestDTO);
+        List<BoardDTO> boardList = boardService.getArticleList(pageRequestDTO);
 
-        List<BoardDTO> allBoardDTO = boardService.getAllArticle(pageRequestDTO);
+//        vue.js 페이지네이션 구현한다면.. 전체 게시글
+//        List<BoardDTO> allBoardDTO = boardService.getAllArticle(pageRequestDTO);
 
         PageResponseDTO responseDTO = boardService.getPagination(pageRequestDTO);
 
         Map<String, Object> responseData = new HashMap<>();
-        responseData.put("board", allBoardDTO);
+        responseData.put("board", boardList);
         responseData.put("page", responseDTO);
 
         ApiResponseDTO<?> apiResponseDTO = ApiResponseDTO.builder()
