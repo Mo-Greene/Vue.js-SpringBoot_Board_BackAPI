@@ -3,6 +3,14 @@
 
 <mapper namespace="com.mogreene.board.dao.FileDAO">
 
+    <select id="getFileList" resultType="FileDTO" parameterType="Long">
+        SELECT *
+
+        FROM file
+
+        WHERE board_no = #{boardNo}
+    </select>
+
     <!--파일 저장-->
     <insert id="saveFile" parameterType="FileDTO">
         INSERT INTO file

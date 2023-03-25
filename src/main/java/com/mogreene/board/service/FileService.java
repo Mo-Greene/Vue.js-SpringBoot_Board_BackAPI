@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -31,6 +32,11 @@ public class FileService {
 
     @Value("${mogreene.upload.path}")
     private String uploadPath;
+
+    public List<FileDTO> getFilesList(Long boardNo) {
+
+        return fileDAO.getFileList(boardNo);
+    }
 
     /**
      * 다중 파일 업로드
@@ -97,5 +103,4 @@ public class FileService {
 
         return fileDTO;
     }
-
 }
