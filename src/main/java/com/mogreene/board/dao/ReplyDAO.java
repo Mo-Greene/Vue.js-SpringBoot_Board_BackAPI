@@ -20,7 +20,7 @@ public interface ReplyDAO {
     /**
      * 댓글 리스트
      * @param BoardNo
-     * @return
+     * @return List<ReplyDTO>
      */
     List<ReplyDTO> getReplyList(Long BoardNo);
 }

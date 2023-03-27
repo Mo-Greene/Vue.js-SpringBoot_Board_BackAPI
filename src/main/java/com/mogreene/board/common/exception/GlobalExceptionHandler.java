@@ -18,9 +18,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**
-     * RuntimeException 예외처리
+     * RuntimeException 전체 예외처리
      * @param e
-     * @return
+     * @return ResponseEntity<ApiResponseDTO<?>>
      */
     @ExceptionHandler(RuntimeException.class)
     protected ResponseEntity<ApiResponseDTO<?>> handleRuntimeException(RuntimeException e) {
@@ -37,9 +37,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     /**
-     * BindingException
+     * BindingException Validation 예외처리
      * @param e
-     * @return
+     * @return ResponseEntity<ApiResponseDTO<?>>
      */
     @ExceptionHandler(BindingException.class)
     protected ResponseEntity<ApiResponseDTO<?>> handleBindingException(BindingException e) {

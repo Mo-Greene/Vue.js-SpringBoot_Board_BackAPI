@@ -17,13 +17,19 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public class ApiResponseDTO<T> {
 
-    /* httpStatus */
+    /**
+     * 공통 response httpStatus
+     */
     private HttpStatus httpStatus;
 
-    /* http 결과 코드 */
+    /**
+     * 공통 response resultCode
+     */
     private Integer resultCode;
 
-    /* 결과 데이터 */
+    /**
+     * 공통 response resultData
+     */
     private T resultData;
 
 }

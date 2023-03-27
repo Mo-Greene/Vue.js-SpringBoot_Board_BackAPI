@@ -24,7 +24,7 @@ public class ReplyController {
      * 댓글 등록
      * @param boardNo
      * @param replyDTO
-     * @return
+     * @return String Message
      */
     @PostMapping("/boards/notice/reply/{boardNo}")
     public ResponseEntity<ApiResponseDTO<?>> postReply(@PathVariable("boardNo") Long boardNo,

@@ -32,16 +32,11 @@ public class BoardService {
     /**
      * 게시글 조회
      * @param pageRequestDTO
-     * @return
+     * @return List BoardDTO
      */
     public List<BoardDTO> getArticleList(PageRequestDTO pageRequestDTO) {
 
         return boardDAO.getArticleList(pageRequestDTO);
-    }
-
-    public List<BoardDTO> getAllArticle(PageRequestDTO pageRequestDTO) {
-
-        return boardDAO.getAllArticle(pageRequestDTO);
     }
 
     /**
@@ -78,7 +73,7 @@ public class BoardService {
     /**
      * 게시글 상세조회
      * @param boardNo
-     * @return
+     * @return BoardDTO
      */
     public BoardDTO getArticleView(Long boardNo) {
 
@@ -117,7 +112,7 @@ public class BoardService {
     /**
      * 비밀번호 확인 로직 (게시글 수정 + 삭제)
      * @param boardDTO
-     * @return StatusCode
+     * @return String Message
      * @throws NoSuchAlgorithmException
      */
     public String passwordCheck(BoardDTO boardDTO) throws NoSuchAlgorithmException {

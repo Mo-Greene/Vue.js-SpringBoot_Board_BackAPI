@@ -20,7 +20,6 @@ import java.util.UUID;
 
 /**
  * 파일 Service
- *
  * @author mogreene
  */
 @Slf4j
@@ -40,7 +39,6 @@ public class FileService {
 
     /**
      * 다중 파일 업로드
-     *
      * @param files
      */
     public void uploadFile(Long boardNo, MultipartFile files) throws IOException {
@@ -69,8 +67,7 @@ public class FileService {
 
     /**
      * 파일 저장시 날짜별로 폴더 만들어서 보관 메서드
-     *
-     * @return
+     * @return 로컬pc 파일디렉토리 생성
      */
     private String makeFolder() {
 
@@ -86,9 +83,8 @@ public class FileService {
 
     /**
      * 파일 다운로드
-     *
      * @param fileNo
-     * @return
+     * @return FileDTO
      */
     public FileDTO downloadFile(Long fileNo) throws IOException {
 

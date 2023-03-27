@@ -30,6 +30,8 @@ public class FileController {
 
     /**
      * 특정게시글 파일 조회
+     * @param boardNo
+     * @return fileDTO
      */
     @GetMapping("/files/{boardNo}")
     public ResponseEntity<ApiResponseDTO<?>> getFileList(@PathVariable Long boardNo) {
@@ -48,7 +50,7 @@ public class FileController {
     /**
      * 파일 다운로드
      * @param fileNo
-     * @return
+     * @return file
      * @throws IOException
      */
     @GetMapping("/files/download/{fileNo}")

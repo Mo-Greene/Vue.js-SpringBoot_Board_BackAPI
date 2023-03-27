@@ -25,7 +25,6 @@ import java.util.Map;
 
 /**
  * 게시글 컨트롤러
- *
  * @author mogreene
  */
 @Slf4j
@@ -37,17 +36,13 @@ public class BoardController {
 
     /**
      * 게시글 전체 조회
-     *
      * @param pageRequestDTO
-     * @return
+     * @return List<BoardDTO>,PageResponseDTO
      */
     @GetMapping("/boards")
     public ResponseEntity<ApiResponseDTO<?>> getArticleList(PageRequestDTO pageRequestDTO) {
 
         List<BoardDTO> boardList = boardService.getArticleList(pageRequestDTO);
-
-//        vue.js 페이지네이션 구현한다면.. 전체 게시글
-//        List<BoardDTO> allBoardDTO = boardService.getAllArticle(pageRequestDTO);
 
         PageResponseDTO responseDTO = boardService.getPagination(pageRequestDTO);
 
@@ -66,12 +61,10 @@ public class BoardController {
 
     /**
      * 게시글 등록
-     *
      * @param boardDTO
      * @param bindingResult
      * @param multipartFile
-     * @return
-     * @throws NoSuchAlgorithmException
+     * @return String Message
      * @throws IOException
      */
     @PostMapping("/boards/write")
@@ -114,9 +107,8 @@ public class BoardController {
 
     /**
      * 게시글 상세조회
-     *
      * @param boardNo
-     * @return
+     * @return boardDTO
      */
     @GetMapping("/boards/notice/{boardNo}")
     public ResponseEntity<ApiResponseDTO<?>> getArticleView(@PathVariable("boardNo") Long boardNo) {
@@ -134,9 +126,8 @@ public class BoardController {
 
     /**
      * 게시글 삭제
-     *
      * @param boardNo
-     * @return
+     * @return HttpStatus.NO_CONTENT
      */
     @DeleteMapping("/boards/delete/{boardNo}")
     public ResponseEntity<?> deleteArticle(@PathVariable("boardNo") Long boardNo) {
@@ -148,9 +139,8 @@ public class BoardController {
 
     /**
      * 게시글 수정
-     *
      * @param boardDTO
-     * @return
+     * @return String Message
      */
     @PutMapping("/boards/modify/{boardNo}")
     public ResponseEntity<ApiResponseDTO<?>> modifyArticle(@PathVariable("boardNo") Long boardNo,
@@ -176,10 +166,9 @@ public class BoardController {
 
     /**
      * 비밀번호 확인 (게시글 수정 + 삭제)
-     *
      * @param boardNo
      * @param boardDTO
-     * @return
+     * @return String Message
      * @throws NoSuchAlgorithmException
      */
     @PostMapping("/boards/password/{boardNo}")

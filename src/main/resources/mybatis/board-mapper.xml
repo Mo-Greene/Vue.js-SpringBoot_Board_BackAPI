@@ -56,27 +56,6 @@
         LIMIT #{skip}, #{size}
     </select>
 
-    <!--게시판 모든 데이터-->
-    <select id="getAllArticle" resultType="BoardDTO">
-        SELECT board_no,
-            board_title,
-            board_content,
-            board_writer,
-            board_reg_date,
-            board_mod_date,
-            board_view,
-            b.category_no,
-            c.category_content
-
-        FROM board AS b
-        JOIN category AS c
-        ON b.category_no = c.category_no
-
-        <include refid="search"/>
-
-        ORDER BY board_no DESC
-    </select>
-
     <!--게시글 등록-->
     <insert id="postArticle" parameterType="BoardDTO" useGeneratedKeys="true" keyProperty="boardNo" keyColumn="board_no">
         INSERT INTO board

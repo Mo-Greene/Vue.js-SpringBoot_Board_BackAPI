@@ -3,6 +3,7 @@
 
 <mapper namespace="com.mogreene.board.dao.FileDAO">
 
+    <!--파일 조회-->
     <select id="getFileList" resultType="FileDTO" parameterType="Long">
         SELECT *
 

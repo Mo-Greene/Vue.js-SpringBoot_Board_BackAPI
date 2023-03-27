@@ -10,7 +10,9 @@ import org.apache.ibatis.annotations.Mapper;
 public interface CategoryDAO {
 
     /**
-     * 카테고리 내용
+     * 카테고리 이름
+     * @param categoryNo
+     * @return String categoryContent
      */
     String getCategory(int categoryNo);
 

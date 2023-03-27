@@ -15,7 +15,7 @@ public interface FileDAO {
     /**
      * 특정게시글 파일 조회
      * @param boardNo
-     * @return
+     * @return List<FileDTO>
      */
     List<FileDTO> getFileList(Long boardNo);
 
