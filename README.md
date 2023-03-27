@@ -1,11 +1,25 @@
 # ✨ SpringBoot Board BackEndAPI
 
+<br/>
+
 ## 💖 프로젝트 개요
 - 사용자의 게시글을 생성, 조회, 수정, 삭제 할 수 있는 게시판 프로젝트
 
 <br/>
 
 -----------
+
+### 💻 프로젝트 설명
+- 서버의 역할만을 위한 게시판 BackEnd API
+- 클린코드를 지향한 코드작성
+- RESTful API 규약에 맞춘 게시판 CRUD 구현
+- 사용자 댓글 구현
+- 에러핸들링 및 예외처리
+- 페이지네이션
+- 일관된 응답 형식에 따른 API 응답 구현(ApiResponseDTO)
+- 다중 파일 업로드, 파일 다운로드 구현
+
+<br/>
 
 ### 🔧 기술 스택
 #### Programming
@@ -22,19 +36,6 @@
 #### IDE
 - IntelliJ IDEA Ultimate Edition
 
-<br/>
-
------------
-
-### 💻 프로젝트 설명
-- 서버의 역할만을 위한 게시판 BackEnd API
-- 클린코드를 지향한 코드작성
-- RESTful API 규약에 맞춘 게시판 CRUD 구현
-- 사용자 댓글 구현
-- 에러핸들링 및 예외처리
-- 
-- 일관된 응답 형식에 따른 API 응답 구현(ApiResponseDTO)
-- 다중 파일 업로드, 파일 다운로드 구현
 
 <br/>
 
