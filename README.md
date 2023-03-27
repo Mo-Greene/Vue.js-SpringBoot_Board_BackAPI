@@ -3,6 +3,7 @@
 ### 💖 프로젝트 개요
 - 사용자의 게시글을 생성, 조회, 수정, 삭제 할 수 있는 게시판 프로젝트
 
+<br/>
 -----------
 ### 🔧 기술 스택
 #### Programming
@@ -19,7 +20,7 @@
 #### IDE
 - IntelliJ IDEA Ultimate Edition
 
-
+<br/>
 -----------
 ### 💻 프로젝트 설명
 - 서버의 역할만을 위한 게시판 BackEnd API
@@ -30,52 +31,33 @@
 - 일관된 응답 형식에 따른 API 응답 구현(ApiResponseDTO)
 - 다중 파일 업로드, 파일 다운로드 구현
 
-
+<br/>
 -----------
 ### 🏗 ERD
 ![Untitled](https://user-images.githubusercontent.com/97177357/227842389-eb6e06d1-f6bf-4400-9c26-ecedf5a28ae1.png)
 
 
+<br/>
 -----------
-### 💭 API Collections
+### 💭 API Documents
 - [Postman API](https://documenter.getpostman.com/view/21420226/2s93RNxuip)
-- [JavaDoc](/docs/allpackages-index.html)
 
-<details>
-<summary>Vue.js 프로젝트 생성 에러 기록</summary>
-
-Vue 설정 오류 해결
-- https://araikuma.tistory.com/117
-
-Vue 파일을 생성하면 리눅스상 소유권자가 root로 되어있음
-<br/>
-backend 파일들은 소유권자 내 이름으로 되어있음
-<br/>
-이렇게 될 경우 파일들의 소유권이 달라 read-only 파일로써 읽기전용으로만 가능
-<br/>
-심지어 해제 불가능 (오류 발생)
-<br/>
-frontend 디렉토리 하위 소유권자를 내이름으로 전부 바꿈
-해결
 
 <br/>
-sudo chown -R {소유권자}:{그룹식별자} {소유권을 변경하고 싶은 디렉토리명}
-
-<br/>
-예시:
-sudo chown -R mogreene:staff {소유권을 변경하고 싶은 디렉토리명}
-
-</details>
-
-<br/>
+-----------
 
 <details>
 <summary> 
 
-## Octet-stream 에러 
+### ❗ Trouble Shooting
 </summary>
 
-### 에러
+
+<details>
+<summary>
+
+#### Octet-stream Trouble
+</summary>
 
 ```
 @GetMapping("/files/download/{fileNo}")
@@ -92,7 +74,7 @@ public ResponseEntity<ApiResponseDTO<Resource>> fileDown(@PathVariable("fileNo")
                     .build());
 }
 ```
-Vue.js를 통해 파일을 다운로드 받으려고 하니 계속해서 
+Vue.js를 통해 파일을 다운로드 받으려고 하니 계속해서
 ```
 No converter for [class com.mogreene.board.common.api.ApiResponseDTO] with preset Content-Type 'application/octet-stream']
 ```
@@ -121,8 +103,9 @@ public void addCorsMappings(CorsRegistry registry) {
 
 에러로그로 잡히기도 하고 그 전에 공통 api를 작성하기 전에는 문제없이 파일이 다운로드가 되었기 때문이다.
 
+<br/>
 
-### 해결
+#### 해결
 ```
 @GetMapping("/files/download/{fileNo}")
 public ResponseEntity<Resource> fileDown(@PathVariable("fileNo") Long fileNo) throws IOException {
@@ -143,21 +126,4 @@ public ResponseEntity<Resource> fileDown(@PathVariable("fileNo") Long fileNo) th
 
 </details>
 
-<br/>
-<details>
-<summary>피드백</summary>
-
-리스트릭트를 걸어보자
-
-value 어노테이션 사용
-
-validation 따로 빼서 사용해보자
-
-vue 프론트는 어떤 이벤트에 어떤 라이프사이클을 구현했는지를 공부하는것
-
-blob 파일전송
 </details>
-
-
-자바 api javadoc 뽑아서 정리
-포스트맨 document 정리
