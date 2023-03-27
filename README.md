@@ -4,7 +4,9 @@
 - 사용자의 게시글을 생성, 조회, 수정, 삭제 할 수 있는 게시판 프로젝트
 
 <br/>
+
 -----------
+
 ### 🔧 기술 스택
 #### Programming
 - Java 11
@@ -21,7 +23,9 @@
 - IntelliJ IDEA Ultimate Edition
 
 <br/>
+
 -----------
+
 ### 💻 프로젝트 설명
 - 서버의 역할만을 위한 게시판 BackEnd API
 - 클린코드를 지향한 코드작성
@@ -32,18 +36,23 @@
 - 다중 파일 업로드, 파일 다운로드 구현
 
 <br/>
+
 -----------
+
 ### 🏗 ERD
 ![Untitled](https://user-images.githubusercontent.com/97177357/227842389-eb6e06d1-f6bf-4400-9c26-ecedf5a28ae1.png)
 
 
 <br/>
+
 -----------
+
 ### 💭 API Documents
 - [Postman API](https://documenter.getpostman.com/view/21420226/2s93RNxuip)
 
 
 <br/>
+
 -----------
 
 <details>
