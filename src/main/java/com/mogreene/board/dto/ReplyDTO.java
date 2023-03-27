@@ -15,16 +15,24 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ReplyDTO {
 
-    /* 댓글 pk */
+    /**
+     * 댓글 pk
+     */
     private Long replyNo;
 
-    /* 댓글 내용 */
+    /**
+     * 댓글 내용
+     */
     private String replyContent;
 
-    /* 댓글 생성 날짜 */
+    /**
+     * 댓글 생성일
+     */
     private String replyRegDate;
 
-    /* 게시글 번호 fk */
+    /**
+     * 게시글 fk
+     */
     private Long boardNo;
 
 }

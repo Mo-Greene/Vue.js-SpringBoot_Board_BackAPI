@@ -1,7 +1,45 @@
-## 피드백 수정 해야될 것
-- 메서드 이름 및 전체적인 리펙토링 진행
-- 공통된 responseDto로 데이터 반환
+## ✨ SpringBoot Board BackEndAPI
 
+### 💖 프로젝트 개요
+- 사용자의 게시글을 생성, 조회, 수정, 삭제 할 수 있는 게시판 프로젝트
+
+-----------
+### 🔧 기술 스택
+#### Programming
+- Java 11
+- Spring Boot 2.6.4
+
+#### DataBase
+- MariaDB
+- MyBatis
+
+#### API Development and Testing
+- Postman
+
+#### IDE
+- IntelliJ IDEA Ultimate Edition
+
+
+-----------
+### 💻 프로젝트 설명
+- 서버의 역할만을 위한 게시판 BackEnd API
+- 클린코드를 지향한 코드작성
+- RESTful API 규약에 맞춘 게시판 CRUD 구현
+- 사용자 댓글 구현
+- 에러핸들링 및 예외처리
+- 일관된 응답 형식에 따른 API 응답 구현(ApiResponseDTO)
+- 다중 파일 업로드, 파일 다운로드 구현
+
+
+-----------
+### 🏗 ERD
+![Untitled](https://user-images.githubusercontent.com/97177357/227842389-eb6e06d1-f6bf-4400-9c26-ecedf5a28ae1.png)
+
+
+-----------
+### 💭 API Collections
+- [Postman API](https://documenter.getpostman.com/view/21420226/2s93RNxuip)
+- [JavaDoc](/docs/allpackages-index.html)
 
 <details>
 <summary>Vue.js 프로젝트 생성 에러 기록</summary>
@@ -24,9 +62,9 @@ frontend 디렉토리 하위 소유권자를 내이름으로 전부 바꿈
 sudo chown -R {소유권자}:{그룹식별자} {소유권을 변경하고 싶은 디렉토리명}
 
 <br/>
+예시:
 sudo chown -R mogreene:staff {소유권을 변경하고 싶은 디렉토리명}
 
-왜 맥은 이런걸까유ㅠㅠㅠ
 </details>
 
 <br/>
@@ -108,31 +146,6 @@ public ResponseEntity<Resource> fileDown(@PathVariable("fileNo") Long fileNo) th
 <br/>
 <details>
 <summary>피드백</summary>
-SpringBoot를 완성시키는걸 위주로!!
-
-Vue는 차차 공부하자
-
-메서드 이름 수정!! 생각하자 클린코드
-
-dto 주석까지 확인하기
-
-메소드 자체에 시그니처를 넣을때 주의해서 넣자
-
-간단한(ex: 파일존재유무, 간단한 포맷팅?) 처리는 서브쿼리로 처리해서
-
-포맷팅 정도는 화면에서 구분해도됨 이건 비즈니스로직도아님
-
-ex) 관리자일 경우, 일본일 경우, 중국일 경우~
-
-@ModelAttribute file도 받을수있나보다
-
-수정할때 파일 삭제도 확인해서 만들어보자
-
-댓글있을때 파일삭제 안되게
-
-vue.js promise?? await
-
-cascade 아예 사용안함
 
 리스트릭트를 걸어보자
 

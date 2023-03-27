@@ -74,7 +74,7 @@ public class BoardController {
     ) throws NoSuchAlgorithmException, IOException {
 
         if (bindingResult.hasErrors()) {
-            throw new BindingException();
+            throw new BindingException("맞지 않는 형식입니다.");
         }
 
         if (multipartFile != null) {
